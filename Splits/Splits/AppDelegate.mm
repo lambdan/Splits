@@ -124,6 +124,7 @@
     _core_application->PauseTimer();
 }
 
+
 - (IBAction)timerPreviousSegment:(id)sender {
     _core_application->GoToPreviousSegment();
 }
@@ -158,6 +159,19 @@
     _core_application->Edit();
 }
 
+
+- (IBAction)OneDecimal:(id)sender {
+    _core_application->SetOneDecimal();
+}
+
+- (IBAction)TwoDecimal:(id)sender {
+    _core_application->SetTwoDecimal();
+}
+
+- (IBAction)ThreeDecimal:(id)sender {
+    _core_application->SetThreeDecimal();
+}
+
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
     if([menuItem action] == @selector(timerStart:)) {
         return _core_application->CanStart();
@@ -174,7 +188,6 @@
     }
     return YES;
 }
-
 
 - (void)windowDidResize:(NSNotification *)notification {
     [self updateDisplay];

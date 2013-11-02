@@ -5,6 +5,7 @@
 //  Created by Edward Waller on 10/17/12.
 //  Copyright (c) 2012 Edward Waller. All rights reserved.
 //
+// taken over by DJS around 1 nov 2013
 
 #include "CoreApplication.h"
 #include <sstream>
@@ -13,6 +14,9 @@
 #include <iomanip>
 #include <SplitsCore/Split.h>
 #include <yaml.h>
+
+
+int millisToShow = 2; // default value of 2 decimals (DJS)
 
 bool StartsWith(std::string input, std::string prefix) {
     return !input.compare(0, prefix.size(), prefix);
@@ -127,7 +131,7 @@ void CoreApplication::LoadSplits(std::string file) {
     YAML::Parser parser(file_stream);
     YAML::Node doc;
     parser.GetNextDocument(doc);
-    doc["title"] >> _title;
+    doc["title"] >> _title; // title is retrieved here? (DJS)
     doc["attempts"] >> _attempts;
     
     const YAML::Node& splits = doc["splits"];
@@ -308,7 +312,26 @@ std::string CoreApplication::DisplayMilliseconds(unsigned long milliseconds, boo
     int hours = milliseconds / (1000*60*60);
     int mins = (milliseconds % (1000*60*60)) / (1000*60);
     int seconds = ((milliseconds % (1000*60*60)) % (1000*60)) / 1000;
-    int millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000;
+    //int millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 10;
+    
+    //int millisToShow = 2; // make a gui for this later (DJS)
+    
+    if (millisToShow==3) {
+    millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000; // 3 decimals
+    }
+    
+    if (millisToShow==2) {
+    millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 10; // 2 decimals
+    }
+    
+    if (millisToShow==1) {
+    millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 100; // 1 decimal
+    }
+    
+    if (millisToShow==NULL) { // default
+        millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 10; // 2 decimals
+        millisToShow=2;
+    }
     
     std::stringstream ss;
     ss << std::setfill('0');
@@ -325,8 +348,8 @@ std::string CoreApplication::DisplayMilliseconds(unsigned long milliseconds, boo
     } else {
         ss << "<span class=\"seconds\">" << std::setw(2) << seconds << "</span>";;
     }
-    if(includeMilliseconds) {
-        ss << "<span class=\"decimal\">.</span>" << "<span class=\"milliseconds\">" << std::setw(3) << millis_remaining << "</span>";
+    if(includeMilliseconds==true) {
+        ss << "<span class=\"decimal\">.</span>" << "<span class=\"milliseconds\">" << std::setw(millisToShow) << millis_remaining << "</span>";
     }
 
     return ss.str();
@@ -416,6 +439,18 @@ bool CoreApplication::CanGoToNextSegment() {
 
 bool CoreApplication::CanGoToPreviousSegment() {
     return _currentSplitIndex > 0;
+}
+
+bool CoreApplication::SetOneDecimal() {
+    millisToShow=1;
+}
+
+bool CoreApplication::SetTwoDecimal() {
+    millisToShow=2;
+}
+
+bool CoreApplication::SetThreeDecimal() {
+    millisToShow=3;
 }
 
 void CoreApplication::Edit() {

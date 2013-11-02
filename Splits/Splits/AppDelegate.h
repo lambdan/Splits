@@ -14,6 +14,9 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
+//@property (assign) IBOutlet NSMenuItem *OneDecimal;
+//@property (assign) IBOutlet NSMenuItem *TwoDecimal;
+//@property (assign) IBOutlet NSMenuItem *ThreeDecimal;
 @property (assign) IBOutlet WebView *webView;
 @property (assign) IBOutlet NSMenuItem *startMenuItem;
 @property (assign) IBOutlet NSMenuItem *pauseMenuItem;
@@ -38,6 +41,9 @@
 - (IBAction)edit:(id)sender;
 - (IBAction)save:(id)sender;
 - (IBAction)saveAs:(id)sender;
+- (IBAction)OneDecimal:(id)sender; // bla
+- (IBAction)TwoDecimal:(id)sender;
+- (IBAction)ThreeDecimal:(id)sender;
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem;
 - (void)windowDidResize:(NSNotification *)notification;
 - (void)updateDisplay;

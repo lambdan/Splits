@@ -13,6 +13,7 @@
 #include <vector>
 #include "WebBrowserInterface.h"
 #include "Timer.h"
+#include "Decimals.h"
 #include "Split.h"
 
 class CoreApplication
@@ -20,6 +21,7 @@ class CoreApplication
 public:
     CoreApplication(std::shared_ptr<WebBrowserInterface> browser, std::string settings_file);
     std::shared_ptr<Timer> timer();
+    //std::shared_ptr<Decimals> decimals();
     void LoadSplits(std::string file);
     void LoadWSplitSplits(std::string file);
     void SaveSplits(std::string file);
@@ -30,6 +32,11 @@ public:
     void StopTimer();
     void ResetTimer();
     void SplitTimer();
+    
+    //void OneDecimal();
+    //void TwoDecimal();
+    //void ThreeDecimal();
+    
     void GoToNextSegment();
     void GoToPreviousSegment();
     void ChangeSetting(std::string key, std::string value);
@@ -40,7 +47,14 @@ public:
     bool CanReset();
     bool CanGoToNextSegment();
     bool CanGoToPreviousSegment();
+    
+    bool SetOneDecimal();
+    bool SetTwoDecimal();
+    bool SetThreeDecimal();
+    
     void Edit();
+    int millis_remaining;
+    int millisToShow;
     std::string DisplayMilliseconds(unsigned long milliseconds, bool includeMilliseconds);
 private:
     void ReloadSplits();
