@@ -92,7 +92,7 @@
 		2CEC81EB167EE5AB0004E059 /* stlnode.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CEC81D0167EE5AB0004E059 /* stlnode.h */; };
 		2CEC81EC167EE5AB0004E059 /* traits.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CEC81D1167EE5AB0004E059 /* traits.h */; };
 		2CEC81ED167EE5AB0004E059 /* yaml.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CEC81D2167EE5AB0004E059 /* yaml.h */; };
-		6AE156731825199D00CDBCF6 /* decimals.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AE156711825199D00CDBCF6 /* decimals.h */; };
+		6AE1568318254F6500CDBCF6 /* Global.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AE1568218254F6500CDBCF6 /* Global.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -182,7 +182,7 @@
 		2CEC81D0167EE5AB0004E059 /* stlnode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stlnode.h; sourceTree = "<group>"; };
 		2CEC81D1167EE5AB0004E059 /* traits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = traits.h; sourceTree = "<group>"; };
 		2CEC81D2167EE5AB0004E059 /* yaml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yaml.h; sourceTree = "<group>"; };
-		6AE156711825199D00CDBCF6 /* decimals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = decimals.h; sourceTree = "<group>"; };
+		6AE1568218254F6500CDBCF6 /* Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Global.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,9 +201,9 @@
 			children = (
 				2CEC81B5167EE5AB0004E059 /* include */,
 				2CEC814D167EDEAE0004E059 /* yaml-cpp */,
-				2C435662162FA83E0036B4AE /* WebBrowserInterface.h */,
 				2C43565C162FA7A40036B4AE /* CoreApplication.cpp */,
-				6AE156711825199D00CDBCF6 /* decimals.h */,
+				2C435662162FA83E0036B4AE /* WebBrowserInterface.h */,
+				6AE1568218254F6500CDBCF6 /* Global.h */,
 				2C43565D162FA7A40036B4AE /* CoreApplication.h */,
 				2C49F81E162FD3E000AAE7B4 /* Timer.cpp */,
 				2C64979E162CEB1400A0198E /* Timer.h */,
@@ -362,7 +362,6 @@
 				2CEC819F167EDEAE0004E059 /* ptr_vector.h in Headers */,
 				2CEC81A1167EDEAE0004E059 /* regex.h in Headers */,
 				2CEC81A2167EDEAE0004E059 /* regeximpl.h in Headers */,
-				6AE156731825199D00CDBCF6 /* decimals.h in Headers */,
 				2CEC81A4167EDEAE0004E059 /* scanner.h in Headers */,
 				2CEC81A6167EDEAE0004E059 /* scanscalar.h in Headers */,
 				2CEC81A8167EDEAE0004E059 /* scantag.h in Headers */,
@@ -397,6 +396,7 @@
 				2CEC81E8167EE5AB0004E059 /* ostream.h in Headers */,
 				2CEC81E9167EE5AB0004E059 /* parser.h in Headers */,
 				2CEC81EA167EE5AB0004E059 /* stlemitter.h in Headers */,
+				6AE1568318254F6500CDBCF6 /* Global.h in Headers */,
 				2CEC81EB167EE5AB0004E059 /* stlnode.h in Headers */,
 				2CEC81EC167EE5AB0004E059 /* traits.h in Headers */,
 				2CEC81ED167EE5AB0004E059 /* yaml.h in Headers */,

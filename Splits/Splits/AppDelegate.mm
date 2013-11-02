@@ -172,22 +172,26 @@
     _core_application->SetThreeDecimal();
 }
 
-- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
-    if([menuItem action] == @selector(timerStart:)) {
-        return _core_application->CanStart();
-    } else if([menuItem action] == @selector(timerPause:)) {
-        return _core_application->CanPause();
-    } else if([menuItem action] == @selector(timerSplit:)) {
-        return _core_application->CanSplit();
-    } else if([menuItem action] == @selector(timerReset:)) {
-        return _core_application->CanReset();
-    } else if([menuItem action] == @selector(timerPreviousSegment:)) {
-        return _core_application->CanGoToPreviousSegment();
-    } else if([menuItem action] == @selector(timerNextSegment:)) {
-        return _core_application->CanGoToNextSegment();
-    }
-    return YES;
+- (IBAction)NoDecimal:(id)sender {
+    _core_application->SetNoDecimal();
 }
+
+// - (BOOL)validateMenuItem:(NSMenuItem *)menuItem { // not sure if i need this. commented it out so i can hit Split before start - seems to work fine without it... leaving for now (DJS)
+//    if([menuItem action] == @selector(timerStart:)) {
+//        return _core_application->CanStart();
+//    } else if([menuItem action] == @selector(timerPause:)) {
+//        return _core_application->CanPause();
+//    } else if([menuItem action] == @selector(timerSplit:)) {
+//        return _core_application->CanSplit();
+//    } else if([menuItem action] == @selector(timerReset:)) {
+//        return _core_application->CanReset();
+//    } else if([menuItem action] == @selector(timerPreviousSegment:)) {
+//        return _core_application->CanGoToPreviousSegment();
+//    } else if([menuItem action] == @selector(timerNextSegment:)) {
+//        return _core_application->CanGoToNextSegment();
+//    }
+//    return YES;
+//}
 
 - (void)windowDidResize:(NSNotification *)notification {
     [self updateDisplay];

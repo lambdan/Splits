@@ -16,8 +16,6 @@
 #include <yaml.h>
 
 
-int millisToShow = 2; // default value of 2 decimals (DJS)
-
 bool StartsWith(std::string input, std::string prefix) {
     return !input.compare(0, prefix.size(), prefix);
 }
@@ -118,6 +116,7 @@ CoreApplication::CoreApplication(std::shared_ptr<WebBrowserInterface> browser, s
                         </body>\
                         </html>"
                        );
+    firstsplit=1; // this is for start/split same key (DJS)
 }
 
 std::shared_ptr<Timer> CoreApplication::timer() {
@@ -248,6 +247,7 @@ void CoreApplication::SaveWSplitSplits(std::string file) {
 
 void CoreApplication::StartTimer() {
     _timer->Start();
+    firstsplit=0;
 }
 
 void CoreApplication::StopTimer() {
@@ -256,13 +256,18 @@ void CoreApplication::StopTimer() {
 
 void CoreApplication::ResetTimer() {
     _timer->Reset();
+    firstsplit=1;
     _currentSplitIndex = 0;
     _attempts++;
     UpdateSplits();
 }
 
 void CoreApplication::SplitTimer() {
-    if(_splits.size() == 0) {
+    if (firstsplit==1) {
+        firstsplit=0;
+        _timer->Start();
+    } else {
+        if(_splits.size() == 0) {
         StopTimer();
         UpdateSplits();
     }
@@ -273,6 +278,7 @@ void CoreApplication::SplitTimer() {
             StopTimer();
         }
         UpdateSplits();
+    }
     }
 }
 
@@ -312,20 +318,20 @@ std::string CoreApplication::DisplayMilliseconds(unsigned long milliseconds, boo
     int hours = milliseconds / (1000*60*60);
     int mins = (milliseconds % (1000*60*60)) / (1000*60);
     int seconds = ((milliseconds % (1000*60*60)) % (1000*60)) / 1000;
-    //int millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 10;
-    
-    //int millisToShow = 2; // make a gui for this later (DJS)
+//    int millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 10;
+//    
+//    int millisToShow = 2; // make a gui for this later (DJS)
     
     if (millisToShow==3) {
-    millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000; // 3 decimals
+        millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000; // 3 decimals
     }
     
     if (millisToShow==2) {
-    millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 10; // 2 decimals
+        millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 10; // 2 decimals
     }
     
     if (millisToShow==1) {
-    millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 100; // 1 decimal
+        millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 100; // 1 decimal
     }
     
     if (millisToShow==NULL) { // default
@@ -348,10 +354,12 @@ std::string CoreApplication::DisplayMilliseconds(unsigned long milliseconds, boo
     } else {
         ss << "<span class=\"seconds\">" << std::setw(2) << seconds << "</span>";;
     }
-    if(includeMilliseconds==true) {
+    if(millisToShow>0) {
         ss << "<span class=\"decimal\">.</span>" << "<span class=\"milliseconds\">" << std::setw(millisToShow) << millis_remaining << "</span>";
+    }else if (millisToShow<0) {
+        ss << "";
     }
-
+    
     return ss.str();
 }
 
@@ -443,14 +451,21 @@ bool CoreApplication::CanGoToPreviousSegment() {
 
 bool CoreApplication::SetOneDecimal() {
     millisToShow=1;
+    UpdateSplits();
 }
-
 bool CoreApplication::SetTwoDecimal() {
     millisToShow=2;
+    UpdateSplits();
 }
 
 bool CoreApplication::SetThreeDecimal() {
     millisToShow=3;
+    UpdateSplits();
+}
+
+bool CoreApplication::SetNoDecimal() {
+    millisToShow=-1;
+    UpdateSplits();
 }
 
 void CoreApplication::Edit() {

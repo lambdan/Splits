@@ -41,9 +41,12 @@
 - (IBAction)edit:(id)sender;
 - (IBAction)save:(id)sender;
 - (IBAction)saveAs:(id)sender;
+
 - (IBAction)OneDecimal:(id)sender; // bla
 - (IBAction)TwoDecimal:(id)sender;
 - (IBAction)ThreeDecimal:(id)sender;
+- (IBAction)NoDecimal:(id)sender;
+
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem;
 - (void)windowDidResize:(NSNotification *)notification;
 - (void)updateDisplay;
