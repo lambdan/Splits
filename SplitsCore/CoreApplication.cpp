@@ -318,9 +318,6 @@ std::string CoreApplication::DisplayMilliseconds(unsigned long milliseconds, boo
     int hours = milliseconds / (1000*60*60);
     int mins = (milliseconds % (1000*60*60)) / (1000*60);
     int seconds = ((milliseconds % (1000*60*60)) % (1000*60)) / 1000;
-//    int millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 10;
-//    
-//    int millisToShow = 2; // make a gui for this later (DJS)
     
     if (millisToShow==3) {
         millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000; // 3 decimals

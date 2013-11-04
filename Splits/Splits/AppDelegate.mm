@@ -222,4 +222,8 @@
     [[self window] setLevel:NSNormalWindowLevel];
 }
 
+- (BOOL) applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender { // press X to quit 
+    return YES;
+}
+
 @end
