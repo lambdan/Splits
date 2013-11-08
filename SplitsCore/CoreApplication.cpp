@@ -81,6 +81,18 @@ CoreApplication::CoreApplication(std::shared_ptr<WebBrowserInterface> browser, s
                        .split_name {\
                            padding-left: 5px;\
                        }\
+                       #runtitle {\
+                        margin-left: 5px;\
+                        text-allign: center;\
+                        color: lime;\
+                        border-bottom: 2px solid lime;\
+                       }\
+                       #runattempts {\
+                       margin-left: 5px;\
+                       text-allign: center;\
+                       color: lime;\
+                       border-bottom: 2px solid lime;\
+                       }\
                        .split_time {\
                            text-align: right;\
                            padding-right: 5px;\
@@ -109,6 +121,7 @@ CoreApplication::CoreApplication(std::shared_ptr<WebBrowserInterface> browser, s
                        </style>\
                        </head>\
                         <body>\
+                       <div id=\"runtitle\"></div>\
                            <div id=\"splits_container\">\
                            <table id=\"splits\" class=\"active\"></table>\
                            </div>\
@@ -131,7 +144,7 @@ void CoreApplication::LoadSplits(std::string file) {
     YAML::Parser parser(file_stream);
     YAML::Node doc;
     parser.GetNextDocument(doc);
-    doc["title"] >> _title; // title is retrieved here? (DJS)
+    doc["title"] >> _title; // title is retrieved here (DJS)
     doc["attempts"] >> _attempts;
     
     const YAML::Node& splits = doc["splits"];
@@ -257,20 +270,20 @@ void CoreApplication::StopTimer() {
 
 void CoreApplication::ResetTimer() {
     _timer->Reset();
-    firstsplit=1; // this is for start/split being the same hotkey
+    firstsplit=1; // this is for start/split being the same hotkey (DJS)
     _currentSplitIndex = 0;
     _attempts++;
-    UpdateSplits();
+    //UpdateSplits();
+    ReloadSplits();
 }
 
 void CoreApplication::SplitTimer() {
-    if (firstsplit==1) { // this is for start/split being the same hotkey
+    if (firstsplit==1) { // this is for start/split being the same hotkey (DJS)
         firstsplit=0;
         _timer->Start();
     } else {
-        // insert double hit split-key protection here
         if (time(NULL)>splitprotection) {
-            splitprotection=time(NULL)+2; // 2 second split protection
+            splitprotection=time(NULL)+2; // 2 second split protection (DJS)
             if(_splits.size() == 0) {
                 StopTimer();
                 UpdateSplits();
@@ -283,7 +296,7 @@ void CoreApplication::SplitTimer() {
             }
                 UpdateSplits();
         } else {
-        // split protection - do nothing
+        // split protection - do nothing (DJS)
         }
         }
     }
@@ -339,8 +352,8 @@ std::string CoreApplication::DisplayMilliseconds(unsigned long milliseconds, boo
     }
     
     if (millisToShow==NULL) { // default
-        millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 10; // 2 decimals
-        millisToShow=2;
+        millis_remaining = ((milliseconds % (1000*60*60)) % (1000*60)) % 1000 / 100; // 1 decimal
+        millisToShow=1;
     }
     
     std::stringstream ss;
@@ -384,8 +397,18 @@ void CoreApplication::Update() {
 
 void CoreApplication::ReloadSplits() {
     std::stringstream javascript_ss;
-
+    run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
+    
     std::string html = "";
+//    html += "<div class=\"run_title\">";
+//    if (ShowTitle==1) {
+//    html += _title;
+//    }
+//    if (ShowAttempts==1) {
+//    html += "</u> #";
+//    html += run_attempts;
+//    }
+//    html += "</div>";
     for(int i = 0; i < _splits.size(); i++) {
         html += "<tr><td class=\"split_name\">";
         html += _splits[i]->name();
@@ -406,7 +429,17 @@ void CoreApplication::ReloadSplits() {
 
 void CoreApplication::UpdateSplits() {
     // Update current split class.
+    
     std::stringstream javascript_ss;
+    if (ShowAttempts==1 && ShowTitle==1) {
+        run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
+        javascript_ss << "$('#runtitle').html('" << "both" <<"');";
+    } else if (ShowAttempts==1) {
+        run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
+        javascript_ss << "$('#runtitle').html('" << run_attempts << "');";
+    } else if (ShowTitle==1) {
+        javascript_ss << "$('#runtitle').html('" << _title << "');";
+    }
     javascript_ss << "$('#splits tr').removeClass('current_split').eq(" << _currentSplitIndex << ").addClass('current_split');";
     for(int i = 0; i < _currentSplitIndex; i++) {
         unsigned long old_time = _splits[i]->time();
@@ -471,6 +504,31 @@ bool CoreApplication::SetNoDecimal() {
     millisToShow=-1;
     UpdateSplits();
 }
+
+bool CoreApplication::ShowRunTitle() {
+    ShowTitle=1;
+    UpdateSplits();
+    //ResetTimer();
+}
+
+bool CoreApplication::ShowRunAttempts() {
+    ShowAttempts=1;
+    //ResetTimer();
+    UpdateSplits();
+}
+
+bool CoreApplication::NoRunTitle() {
+    ShowTitle=0; // yes i know i can use bool's instead of int's. but this works so who cares (DJS)
+    //ResetTimer();
+    UpdateSplits();
+}
+
+bool CoreApplication::NoRunAttempts() {
+    ShowAttempts=0;
+    //ResetTimer();
+    UpdateSplits();
+}
+
 
 void CoreApplication::Edit() {
     _browser->RunJavascript("$('#splits').removeClass('active').addClass('editing');$('#splits tr').append('<td class=\"remove_split\">-</td><td class=\"add_split\">+</td>');$('#splits').append('<tr><td></td><td></td><td></td><td class=\"add_split\">+</td>');$('.split_name, .split_time').attr('contentEditable', true);$('.split_name').first().focus();");

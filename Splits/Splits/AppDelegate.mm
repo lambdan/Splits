@@ -176,6 +176,22 @@
     _core_application->SetNoDecimal();
 }
 
+- (IBAction)ShowRunTitle:(id)sender {
+    _core_application->ShowRunTitle();
+}
+
+- (IBAction)ShowRunAttempts:(id)sender {
+    _core_application->ShowRunAttempts();
+}
+
+- (IBAction)NoRunTitle:(id)sender {
+    _core_application->ShowRunTitle();
+}
+
+- (IBAction)NoRunAttempts:(id)sender {
+    _core_application->ShowRunAttempts();
+}
+
 // - (BOOL)validateMenuItem:(NSMenuItem *)menuItem { // not sure if i need this. commented it out so i can hit Split before start - seems to work fine without it... leaving for now (DJS)
 //    if([menuItem action] == @selector(timerStart:)) {
 //        return _core_application->CanStart();

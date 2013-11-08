@@ -47,6 +47,12 @@
 - (IBAction)ThreeDecimal:(id)sender;
 - (IBAction)NoDecimal:(id)sender;
 
+- (IBAction)ShowRunTitle:(id)sender;
+- (IBAction)ShowRunAttempts:(id)sender;
+
+- (IBAction)NoRunTitle:(id)sender;
+- (IBAction)NoRunAttempts:(id)sender;
+
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem;
 - (void)windowDidResize:(NSNotification *)notification;
 - (void)updateDisplay;

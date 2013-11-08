@@ -48,6 +48,14 @@ public:
     bool SetThreeDecimal();
     bool SetNoDecimal();
     
+    bool ShowRunTitle();
+    bool ShowRunAttempts();
+    bool NoRunTitle();
+    bool NoRunAttempts();
+    
+    int ShowTitle;
+    int ShowAttempts;
+    
     int splitprotection;
     
     void Edit();
@@ -65,6 +73,7 @@ private:
     std::shared_ptr<Timer> _timer;
     std::string _title;
     int _attempts;
+    std::string run_attempts;
 };
 
 #endif /* defined(__SplitsCore__CoreApplication__) */
