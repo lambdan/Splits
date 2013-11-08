@@ -48,6 +48,8 @@ public:
     bool SetThreeDecimal();
     bool SetNoDecimal();
     
+    int splitprotection;
+    
     void Edit();
     int firstsplit;
     int millis_remaining;

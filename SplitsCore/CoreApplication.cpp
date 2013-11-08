@@ -117,6 +117,7 @@ CoreApplication::CoreApplication(std::shared_ptr<WebBrowserInterface> browser, s
                         </html>"
                        );
     firstsplit=1; // this is for start/split same key (DJS)
+    splitprotection=0;
 }
 
 std::shared_ptr<Timer> CoreApplication::timer() {
@@ -256,29 +257,35 @@ void CoreApplication::StopTimer() {
 
 void CoreApplication::ResetTimer() {
     _timer->Reset();
-    firstsplit=1;
+    firstsplit=1; // this is for start/split being the same hotkey
     _currentSplitIndex = 0;
     _attempts++;
     UpdateSplits();
 }
 
 void CoreApplication::SplitTimer() {
-    if (firstsplit==1) {
+    if (firstsplit==1) { // this is for start/split being the same hotkey
         firstsplit=0;
         _timer->Start();
     } else {
-        if(_splits.size() == 0) {
-        StopTimer();
-        UpdateSplits();
-    }
-    if(_currentSplitIndex < _splits.size()) {
-        _splits[_currentSplitIndex]->set_new_time(_timer->GetTimeElapsedMilliseconds());
-        _currentSplitIndex++;
-        if(_currentSplitIndex == _splits.size()) {
-            StopTimer();
+        // insert double hit split-key protection here
+        if (time(NULL)>splitprotection) {
+            splitprotection=time(NULL)+2; // 2 second split protection
+            if(_splits.size() == 0) {
+                StopTimer();
+                UpdateSplits();
+            }
+            if(_currentSplitIndex < _splits.size()) {
+                    _splits[_currentSplitIndex]->set_new_time(_timer->GetTimeElapsedMilliseconds());
+                    _currentSplitIndex++;
+            if(_currentSplitIndex == _splits.size()) {
+                StopTimer();
+            }
+                UpdateSplits();
+        } else {
+        // split protection - do nothing
         }
-        UpdateSplits();
-    }
+        }
     }
 }
 
