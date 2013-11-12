@@ -1,0 +1,22 @@
+1.04 - tba
+* split protection (i.e. so you cant double-hit split key)
+* title & attempts display (optional ofcourse)
+
+1.03 - nov 04 2013
+* changed about box a little
+* pressing (X) now quits the app
+* removed some commented stuff
+* changed credits.rtf
+
+1.02 - nov 02 2013
+* same key for start/split
+* new icon
+* added no decimals option
+* one decimal is now default
+
+1.01 - nov 02 2013
+* set decimals (under Window>), 1 to 3
+* 2 decimals is new default
+
+1.00 - nov 01 2013
+* changed hotkeys
