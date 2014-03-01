@@ -185,11 +185,11 @@
 }
 
 - (IBAction)NoRunTitle:(id)sender {
-    _core_application->ShowRunTitle();
+    _core_application->NoRunTitle();
 }
 
 - (IBAction)NoRunAttempts:(id)sender {
-    _core_application->ShowRunAttempts();
+    _core_application->NoRunAttempts();
 }
 
 // - (BOOL)validateMenuItem:(NSMenuItem *)menuItem { // not sure if i need this. commented it out so i can hit Split before start - seems to work fine without it... leaving for now (DJS)
@@ -222,7 +222,7 @@
 }
 
 - (void)webView:(WebView *)sender runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WebFrame *)frame {
-    NSLog(message);
+    //NSLog(message);
 }
 
 - (void)windowDidResignMain:(NSNotification *)notification {

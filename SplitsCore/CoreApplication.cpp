@@ -122,6 +122,7 @@ CoreApplication::CoreApplication(std::shared_ptr<WebBrowserInterface> browser, s
                        </head>\
                         <body>\
                        <div id=\"runtitle\"></div>\
+                       <div id=\"runattempts\"></div>\
                            <div id=\"splits_container\">\
                            <table id=\"splits\" class=\"active\"></table>\
                            </div>\
@@ -431,15 +432,34 @@ void CoreApplication::UpdateSplits() {
     // Update current split class.
     
     std::stringstream javascript_ss;
-    if (ShowAttempts==1 && ShowTitle==1) {
-        run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
-        javascript_ss << "$('#runtitle').html('" << "both" <<"');";
-    } else if (ShowAttempts==1) {
-        run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
-        javascript_ss << "$('#runtitle').html('" << run_attempts << "');";
-    } else if (ShowTitle==1) {
-        javascript_ss << "$('#runtitle').html('" << _title << "');";
+//    if (ShowAttempts==1 && ShowTitle==1) {
+//        run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
+//        javascript_ss << "$('#runtitle').html('" << "both" <<"');"; // fix this later !!!!!!!!!!!!
+//    } else if (ShowAttempts==1) {
+//        run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
+//        javascript_ss << "$('#runtitle').html('" << run_attempts << "');";
+//    } else if (ShowTitle==1) {
+//        javascript_ss << "$('#runtitle').html('" << _title << "');";
+//    }
+//    if (ShowTitle==0) {
+//        javascript_ss << "$('#runtitle').html('Title disabled.');";
+//    } else if (ShowAttempts==0) {
+//        javascript_ss << "$('#runtitle').html('Attempts disabled.');";
+//    }
+    
+    if (ShowAttempts==1) {
+        run_attempts = std::to_string(_attempts);
+        javascript_ss << "$('#runattempts').html('" << _attempts << "');";
+    } else if (ShowAttempts==0) {
+        javascript_ss << "$('#runattempts').html('Attempts disabled.');";
     }
+    
+    if (ShowTitle==1) {
+        javascript_ss << "$('#runtitle').html('" << _title << "');";
+    } else if (ShowTitle==0) {
+        javascript_ss << "$('#runtitle').html('Not showing title.');";
+    }
+    
     javascript_ss << "$('#splits tr').removeClass('current_split').eq(" << _currentSplitIndex << ").addClass('current_split');";
     for(int i = 0; i < _currentSplitIndex; i++) {
         unsigned long old_time = _splits[i]->time();
@@ -489,44 +509,52 @@ bool CoreApplication::CanGoToPreviousSegment() {
 bool CoreApplication::SetOneDecimal() {
     millisToShow=1;
     UpdateSplits();
+    return 0;
 }
+
 bool CoreApplication::SetTwoDecimal() {
     millisToShow=2;
     UpdateSplits();
+    return 0;
 }
 
 bool CoreApplication::SetThreeDecimal() {
     millisToShow=3;
     UpdateSplits();
+    return 0;
 }
 
 bool CoreApplication::SetNoDecimal() {
     millisToShow=-1;
     UpdateSplits();
+    return 0;
 }
 
 bool CoreApplication::ShowRunTitle() {
     ShowTitle=1;
     UpdateSplits();
     //ResetTimer();
+    return 0;
 }
 
 bool CoreApplication::ShowRunAttempts() {
     ShowAttempts=1;
-    //ResetTimer();
     UpdateSplits();
+    return 0;
 }
 
 bool CoreApplication::NoRunTitle() {
     ShowTitle=0; // yes i know i can use bool's instead of int's. but this works so who cares (DJS)
     //ResetTimer();
     UpdateSplits();
+    return 0;
 }
 
 bool CoreApplication::NoRunAttempts() {
     ShowAttempts=0;
     //ResetTimer();
     UpdateSplits();
+    return 0;
 }
 
 
