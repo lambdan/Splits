@@ -1,6 +1,13 @@
+1.0x - TBA
+* external css file (set colors, font etc as you like!!)
+
 1.04 - tba
+* css is now loaded from my dropbox. hoping to make it user editable soon. 
+	I was planning on having it in this release, but due to complications I couldn’t.
+	Hopefully in 1.05!
 * split protection (i.e. so you cant double-hit split key)
 * title & attempts display (optional ofcourse)
+* known bug: sometimes when opening the app, it will show 0,00000000000000… no idea why…
 
 1.03 - nov 04 2013
 * changed about box a little

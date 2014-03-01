@@ -16,6 +16,8 @@
 #include "Global.h"
 #include "Split.h"
 
+
+
 class CoreApplication
 {
 public:
@@ -63,6 +65,7 @@ public:
     int millis_remaining;
     int millisToShow;
     std::string DisplayMilliseconds(unsigned long milliseconds, bool includeMilliseconds);
+    std::string homedir;
 private:
     void ReloadSplits();
     void UpdateSplits();

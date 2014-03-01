@@ -14,6 +14,8 @@
 #include <iomanip>
 #include <SplitsCore/Split.h>
 #include <yaml.h>
+#include <stdio.h> 
+#include <stdlib.h> 
 
 
 bool StartsWith(std::string input, std::string prefix) {
@@ -31,98 +33,23 @@ std::vector<std::string> SplitString(const std::string &s, char delim) {
 }
 
 CoreApplication::CoreApplication(std::shared_ptr<WebBrowserInterface> browser, std::string settings_file) : _browser(browser), _settings_file(settings_file), _currentSplitIndex(0), _timer(new Timer), _attempts(0), _title("") {
+    
+    // One approach at getting the default style css...
+    //system("curl -O https://dl.dropboxusercontent.com/u/60071552/external.css"); // download default external.css
+    //system("mv external.css ~/Splits.css");
+    //homedir=system("echo $HOME");
+    
+    //<link rel=\"stylesheet\" type=\"text/css\" href=\"external.css\">\
+    
+    //TODO: Load external CSS files
+    
     _browser->LoadHTML("<html>\
                        <head>\
+                       <link rel=\"stylesheet\" type=\"text/css\" href=\"https://dl.dropboxusercontent.com/u/60071552/external.css\">\
                        <script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js\"></script>\
-                       <style type=\"text/css\" media=\"screen\">\
-                       body {\
-                           font-family: \"Helvetica Neue\",Helvetica,Arial,sans-serif;\
-                           font-size: 1em;\
-                           color: #CCC;\
-                           background-color: #000;\
-                           margin: 0;\
-                       }\
-                       #timer {\
-                           text-align: right;\
-                           font-size: 2em;\
-                           color: #C679FF;\
-                           font-weight: bold;\
-                           margin-right: 5px;\
-                       }\
-                       #splits_container {\
-                           overflow: auto;\
-                       }\
-                       #splits_container::-webkit-scrollbar {\
-                           display: none;\
-                       }\
-                       #splits {\
-                           outline: 0px solid transparent;\
-                           width: 100%;\
-                           border-spacing: 0;\
-                       }\
-                       #splits td {\
-                           margin: 0;\
-                           border-bottom: 1px solid #000;\
-                           border-top: 1px solid #000;\
-                       }\
-                       .add_split, .remove_split {\
-                           text-align: center;\
-                           min-width: 20px;\
-                           width: 20px;\
-                           font-weight: bold;\
-                           cursor: pointer;\
-                       }\
-                       .remove_split {\
-                           color: red;\
-                       }\
-                       .add_split {\
-                           color: #00FF00;\
-                       }\
-                       .split_name {\
-                           padding-left: 5px;\
-                       }\
-                       #runtitle {\
-                        margin-left: 5px;\
-                        text-allign: center;\
-                        color: lime;\
-                        border-bottom: 2px solid lime;\
-                       }\
-                       #runattempts {\
-                       margin-left: 5px;\
-                       text-allign: center;\
-                       color: lime;\
-                       border-bottom: 2px solid lime;\
-                       }\
-                       .split_time {\
-                           text-align: right;\
-                           padding-right: 5px;\
-                       }\
-                       .split_time.minus {\
-                           color: #00BFFF;\
-                       }\
-                       .split_time.plus {\
-                           color: #FF4000;\
-                       }\
-                       #splits.active .current_split td {\
-                           border-bottom: 1px solid #1165B5;\
-                           border-top: 1px solid #1165B5;\
-                           color: #FFF;\
-                       }\
-                       #splits.editing {\
-                           color: #FFF;\
-                       }\
-                       .milliseconds {\
-                           margin-left: 5px;\
-                           font-size: 0.65em;\
-                       }\
-                       .decimal {\
-                           display: none;\
-                       }\
-                       </style>\
-                       </head>\
+                        </head>\
                         <body>\
-                       <div id=\"runtitle\"></div>\
-                       <div id=\"runattempts\"></div>\
+                       <center><div id=\"runtitle\"></div></center>\
                            <div id=\"splits_container\">\
                            <table id=\"splits\" class=\"active\"></table>\
                            </div>\
@@ -398,6 +325,8 @@ void CoreApplication::Update() {
 
 void CoreApplication::ReloadSplits() {
     std::stringstream javascript_ss;
+    
+    
     run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
     
     std::string html = "";
@@ -430,34 +359,19 @@ void CoreApplication::ReloadSplits() {
 
 void CoreApplication::UpdateSplits() {
     // Update current split class.
-    
     std::stringstream javascript_ss;
-//    if (ShowAttempts==1 && ShowTitle==1) {
-//        run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
-//        javascript_ss << "$('#runtitle').html('" << "both" <<"');"; // fix this later !!!!!!!!!!!!
-//    } else if (ShowAttempts==1) {
-//        run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
-//        javascript_ss << "$('#runtitle').html('" << run_attempts << "');";
-//    } else if (ShowTitle==1) {
-//        javascript_ss << "$('#runtitle').html('" << _title << "');";
-//    }
-//    if (ShowTitle==0) {
-//        javascript_ss << "$('#runtitle').html('Title disabled.');";
-//    } else if (ShowAttempts==0) {
-//        javascript_ss << "$('#runtitle').html('Attempts disabled.');";
-//    }
     
-    if (ShowAttempts==1) {
+    // Title and Attempt Display
+    if (ShowAttempts==1 && ShowTitle==1) { // show both
         run_attempts = std::to_string(_attempts);
-        javascript_ss << "$('#runattempts').html('" << _attempts << "');";
-    } else if (ShowAttempts==0) {
-        javascript_ss << "$('#runattempts').html('Attempts disabled.');";
-    }
-    
-    if (ShowTitle==1) {
+        javascript_ss << "$('#runtitle').html('" << _title << " - #" << run_attempts << "');";
+    } else if (ShowAttempts==1 && ShowTitle==0) { // show attempts
+        run_attempts = std::to_string(_attempts);
+        javascript_ss << "$('#runtitle').html('" << run_attempts << "');";
+    } else if (ShowTitle==1 && ShowAttempts==0) {
         javascript_ss << "$('#runtitle').html('" << _title << "');";
-    } else if (ShowTitle==0) {
-        javascript_ss << "$('#runtitle').html('Not showing title.');";
+    } else if (ShowTitle==0 && ShowAttempts==0) { // none
+        javascript_ss << "$('#runtitle').html('');";
     }
     
     javascript_ss << "$('#splits tr').removeClass('current_split').eq(" << _currentSplitIndex << ").addClass('current_split');";
