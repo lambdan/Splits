@@ -1,13 +1,16 @@
 1.0x - TBA
-* external css file (set colors, font etc as you like!!)
+* external css file (set colors, font etc as you like!!! GO CRAZY)
 
-1.04 - tba
-* css is now loaded from my dropbox. hoping to make it user editable soon. 
-	I was planning on having it in this release, but due to complications I couldn’t.
-	Hopefully in 1.05!
+1.04 - mar 02 2014
 * split protection (i.e. so you cant double-hit split key)
 * title & attempts display (optional ofcourse)
 * known bug: sometimes when opening the app, it will show 0,00000000000000… no idea why…
+* *** css is now loaded from my dropbox (internet connection required, every startup)
+* *** known bug: timer is not at bottom when no title/attempts are shown
+*** = I was hoping to have an user editable, external CSS file for this release, but I need to learn the relative path’s for the HTML that is being used, or how to reload CSS on demand. Hoping to have this fixed in 1.05.
+Figuring out how to reload (a new) CSS on demand will also fix the timer positioning bug, as I can have one margin for with title/attempts, and one for without. The best thing though, once I figure it out, is that you will be able to open up the css file and go crazy, change fonts, change colors, change sizes, change margins. everything!
+Because I don’t know a lot about this right now, i’m releasing 1.04 as it is. No ETA for 1.05.
+
 
 1.03 - nov 04 2013
 * changed about box a little
