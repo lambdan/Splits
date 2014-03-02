@@ -49,9 +49,10 @@
 
 - (IBAction)ShowRunTitle:(id)sender;
 - (IBAction)ShowRunAttempts:(id)sender;
-
 - (IBAction)NoRunTitle:(id)sender;
 - (IBAction)NoRunAttempts:(id)sender;
+- (IBAction)ShowBothTitleAttempts:(id)sender;
+- (IBAction)HideBothTitleAttempts:(id)sender;
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem;
 - (void)windowDidResize:(NSNotification *)notification;

@@ -330,15 +330,6 @@ void CoreApplication::ReloadSplits() {
     run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
     
     std::string html = "";
-//    html += "<div class=\"run_title\">";
-//    if (ShowTitle==1) {
-//    html += _title;
-//    }
-//    if (ShowAttempts==1) {
-//    html += "</u> #";
-//    html += run_attempts;
-//    }
-//    html += "</div>";
     for(int i = 0; i < _splits.size(); i++) {
         html += "<tr><td class=\"split_name\">";
         html += _splits[i]->name();
@@ -367,7 +358,7 @@ void CoreApplication::UpdateSplits() {
         javascript_ss << "$('#runtitle').html('" << _title << " - #" << run_attempts << "');";
     } else if (ShowAttempts==1 && ShowTitle==0) { // show attempts
         run_attempts = std::to_string(_attempts);
-        javascript_ss << "$('#runtitle').html('" << run_attempts << "');";
+        javascript_ss << "$('#runtitle').html('#" << run_attempts << "');";
     } else if (ShowTitle==1 && ShowAttempts==0) {
         javascript_ss << "$('#runtitle').html('" << _title << "');";
     } else if (ShowTitle==0 && ShowAttempts==0) { // none
@@ -467,6 +458,20 @@ bool CoreApplication::NoRunTitle() {
 bool CoreApplication::NoRunAttempts() {
     ShowAttempts=0;
     //ResetTimer();
+    UpdateSplits();
+    return 0;
+}
+
+bool CoreApplication::ShowBothTitleAttempts() {
+    ShowAttempts=1;
+    ShowTitle=1;
+    UpdateSplits();
+    return 0;
+}
+
+bool CoreApplication::HideBothTitleAttempts() {
+    ShowAttempts=0;
+    ShowTitle=0;
     UpdateSplits();
     return 0;
 }

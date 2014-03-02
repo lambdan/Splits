@@ -192,6 +192,14 @@
     _core_application->NoRunAttempts();
 }
 
+- (IBAction)ShowBothTitleAttempts:(id)sender {
+    _core_application->ShowBothTitleAttempts();
+}
+
+- (IBAction)HideBothTitleAttempts:(id)sender {
+    _core_application->HideBothTitleAttempts();
+}
+
 // - (BOOL)validateMenuItem:(NSMenuItem *)menuItem { // not sure if i need this. commented it out so i can hit Split before start - seems to work fine without it... leaving for now (DJS)
 //    if([menuItem action] == @selector(timerStart:)) {
 //        return _core_application->CanStart();

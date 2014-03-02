@@ -54,6 +54,8 @@ public:
     bool ShowRunAttempts();
     bool NoRunTitle();
     bool NoRunAttempts();
+    bool ShowBothTitleAttempts();
+    bool HideBothTitleAttempts();
     
     int ShowTitle;
     int ShowAttempts;
