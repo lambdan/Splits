@@ -1,6 +1,7 @@
 1.05 - mar 03 2014
 * external css file (Go crazy!)
 * default css is loaded from my server (http://lambdan.se/splits.css)
+* 1.05a: removed <center> tags. use css instead.
 
 
 1.04 - mar 02 2014
