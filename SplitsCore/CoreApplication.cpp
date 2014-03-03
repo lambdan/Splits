@@ -45,8 +45,8 @@ CoreApplication::CoreApplication(std::shared_ptr<WebBrowserInterface> browser, s
     
     _browser->LoadHTML("<html>\
                        <head>\
-                       <link rel=\"stylesheet\" type=\"text/css\" href=\"https://dl.dropboxusercontent.com/u/60071552/external.css\">\
                        <script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js\"></script>\
+                       <link rel=\"stylesheet\" type=\"text/css\" href=\"https://dl.dropboxusercontent.com/u/60071552/external.css\">\
                        </head>\
                        <body>\
                        <center><div id=\"runtitle\"></div></center>\
@@ -429,6 +429,13 @@ bool CoreApplication::SetThreeDecimal() {
     return 0;
 }
 
+bool CoreApplication::ReloadCSS() {
+    std::stringstream javascript_ss;
+    javascript_ss << "var x; var link=prompt(\"URL to your CSS file\",\"http://pastebin.com/raw.php?i=ngnXTvfb\");if(link!=null){$('head').append( $('<link rel=\"stylesheet\" type=\"text/css\" />').attr('href', link) ); }else{prompt(\" ERROR\");}";
+    _browser->RunJavascript(javascript_ss.str());
+    return 0;
+}
+
 bool CoreApplication::CloseSplitsToTimer() {
     // Close and open just timer
     _currentSplitIndex=0;
@@ -438,6 +445,7 @@ bool CoreApplication::CloseSplitsToTimer() {
     firstsplit=1;
     splitprotection=0;
     ReloadSplits();
+    return 0;
 }
 
 bool CoreApplication::SetNoDecimal() {
