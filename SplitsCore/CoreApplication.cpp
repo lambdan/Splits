@@ -429,6 +429,17 @@ bool CoreApplication::SetThreeDecimal() {
     return 0;
 }
 
+bool CoreApplication::CloseSplitsToTimer() {
+    // Close and open just timer
+    _currentSplitIndex=0;
+    _timer->Reset();
+    _attempts=0;
+    _title = "";
+    firstsplit=1;
+    splitprotection=0;
+    ReloadSplits();
+}
+
 bool CoreApplication::SetNoDecimal() {
     millisToShow=-1;
     UpdateSplits();
