@@ -291,7 +291,7 @@ std::string CoreApplication::DisplayMilliseconds(unsigned long milliseconds, boo
         ss << "<span class=\"seconds\">" << std::setw(2) << seconds << "</span>";;
     }
     if(millisToShow>0) {
-        ss << "<span class=\"decimal\">.</span>" << "<span class=\"milliseconds\">" << std::setw(millisToShow) << millis_remaining << "</span>";
+        ss << "<span class=\"decimal\">,</span>" << "<span class=\"milliseconds\">" << std::setw(millisToShow) << millis_remaining << "</span>";
     }else if (millisToShow<0) {
         ss << "";
     }

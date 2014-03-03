@@ -12,6 +12,7 @@
 
 @implementation AppDelegate
 
+
 @synthesize window;
 @synthesize webView;
 @synthesize startMenuItem;
@@ -35,6 +36,7 @@
     
     [window setBackgroundColor:[NSColor blackColor]];
     [webView setDrawsBackground:NO];
+    //[window setStyleMask:NSBorderlessWindowMask]; // hides title bar, but cant move window then :(
     
     [NSTimer scheduledTimerWithTimeInterval: 0.033 target: self selector:@selector(onTick:) userInfo: nil repeats:YES];
 }
