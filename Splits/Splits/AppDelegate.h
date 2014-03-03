@@ -41,6 +41,7 @@
 - (IBAction)edit:(id)sender;
 - (IBAction)save:(id)sender;
 - (IBAction)saveAs:(id)sender;
+- (IBAction)CloseSplitsToTimer:(id)sender;
 
 - (IBAction)OneDecimal:(id)sender; // bla
 - (IBAction)TwoDecimal:(id)sender;

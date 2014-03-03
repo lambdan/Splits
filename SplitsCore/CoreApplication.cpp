@@ -14,8 +14,8 @@
 #include <iomanip>
 #include <SplitsCore/Split.h>
 #include <yaml.h>
-#include <stdio.h> 
-#include <stdlib.h> 
+#include <stdio.h>
+#include <stdlib.h>
 
 
 bool StartsWith(std::string input, std::string prefix) {
@@ -47,15 +47,15 @@ CoreApplication::CoreApplication(std::shared_ptr<WebBrowserInterface> browser, s
                        <head>\
                        <link rel=\"stylesheet\" type=\"text/css\" href=\"https://dl.dropboxusercontent.com/u/60071552/external.css\">\
                        <script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js\"></script>\
-                        </head>\
-                        <body>\
+                       </head>\
+                       <body>\
                        <center><div id=\"runtitle\"></div></center>\
-                           <div id=\"splits_container\">\
-                           <table id=\"splits\" class=\"active\"></table>\
-                           </div>\
-                           <div id=\"timer\"></div>\
-                        </body>\
-                        </html>"
+                       <div id=\"splits_container\">\
+                       <table id=\"splits\" class=\"active\"></table>\
+                       </div>\
+                       <div id=\"timer\"></div>\
+                       </body>\
+                       </html>"
                        );
     firstsplit=1; // this is for start/split same key (DJS)
     splitprotection=0;
@@ -105,7 +105,7 @@ void CoreApplication::SaveSplits(std::string file) {
     out << YAML::Key << "splits";
     out << YAML::Value;
     out << YAML::BeginSeq;
-
+    
     for(int i = 0; i < _splits.size(); i++) {
         out << YAML::BeginMap;
         out << YAML::Key << "name";
@@ -146,10 +146,10 @@ void CoreApplication::LoadWSplitSplits(std::string file) {
     while (!file_stream.eof())
     {
         getline(file_stream, line);
-
+        
         // Remove \r from end of line.
         line = line.substr(0, line.size() - 1);
-
+        
         // Skip empty lines.
         if(line.size() > 0) {
             if(StartsWith(line, title_equals)) {
@@ -217,15 +217,15 @@ void CoreApplication::SplitTimer() {
                 UpdateSplits();
             }
             if(_currentSplitIndex < _splits.size()) {
-                    _splits[_currentSplitIndex]->set_new_time(_timer->GetTimeElapsedMilliseconds());
-                    _currentSplitIndex++;
-            if(_currentSplitIndex == _splits.size()) {
-                StopTimer();
-            }
+                _splits[_currentSplitIndex]->set_new_time(_timer->GetTimeElapsedMilliseconds());
+                _currentSplitIndex++;
+                if(_currentSplitIndex == _splits.size()) {
+                    StopTimer();
+                }
                 UpdateSplits();
-        } else {
-        // split protection - do nothing (DJS)
-        }
+            } else {
+                // split protection - do nothing (DJS)
+            }
         }
     }
 }
@@ -427,6 +427,17 @@ bool CoreApplication::SetThreeDecimal() {
     millisToShow=3;
     UpdateSplits();
     return 0;
+}
+
+bool CoreApplication::CloseSplitsToTimer() {
+    // Close and open just timer
+    _currentSplitIndex=0;
+    _timer->Reset();
+    _attempts=0;
+    _title = "";
+    firstsplit=1;
+    splitprotection=0;
+    ReloadSplits();
 }
 
 bool CoreApplication::SetNoDecimal() {

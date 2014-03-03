@@ -35,7 +35,7 @@
     
     [window setBackgroundColor:[NSColor blackColor]];
     [webView setDrawsBackground:NO];
-
+    
     [NSTimer scheduledTimerWithTimeInterval: 0.033 target: self selector:@selector(onTick:) userInfo: nil repeats:YES];
 }
 
@@ -200,6 +200,10 @@
     _core_application->HideBothTitleAttempts();
 }
 
+- (IBAction)CloseSplitsToTimer:(id)sender {
+    _core_application->CloseSplitsToTimer();
+}
+
 // - (BOOL)validateMenuItem:(NSMenuItem *)menuItem { // not sure if i need this. commented it out so i can hit Split before start - seems to work fine without it... leaving for now (DJS)
 //    if([menuItem action] == @selector(timerStart:)) {
 //        return _core_application->CanStart();
@@ -246,7 +250,7 @@
     [[self window] setLevel:NSNormalWindowLevel];
 }
 
-- (BOOL) applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender { // press X to quit 
+- (BOOL) applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender { // press X to quit
     return YES;
 }
 
