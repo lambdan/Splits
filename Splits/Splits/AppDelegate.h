@@ -43,6 +43,7 @@
 - (IBAction)saveAs:(id)sender;
 - (IBAction)CloseSplitsToTimer:(id)sender;
 - (IBAction)ReloadCSS:(id)sender;
+- (IBAction)DefaultCSS:(id)sender;
 
 - (IBAction)OneDecimal:(id)sender; // bla
 - (IBAction)TwoDecimal:(id)sender;

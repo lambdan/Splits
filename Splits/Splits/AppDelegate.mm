@@ -208,6 +208,10 @@
     _core_application->ReloadCSS();
 }
 
+- (IBAction)DefaultCSS:(id)sender {
+    _core_application->DefaultCSS();
+}
+
 // - (BOOL)validateMenuItem:(NSMenuItem *)menuItem { // not sure if i need this. commented it out so i can hit Split before start - seems to work fine without it... leaving for now (DJS)
 //    if([menuItem action] == @selector(timerStart:)) {
 //        return _core_application->CanStart();

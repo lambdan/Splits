@@ -1,5 +1,7 @@
-1.0x - TBA
-* external css file (set colors, font etc as you like!!! GO CRAZY)
+1.05 - TBA
+* external css file (Go crazy!)
+* default css is loaded from my server (http://lambdan.se/splits.css)
+
 
 1.04 - mar 02 2014
 * split protection (i.e. so you cant double-hit split key)
