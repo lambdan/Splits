@@ -44,6 +44,7 @@ public:
     bool CanReset();
     bool CanGoToNextSegment();
     bool CanGoToPreviousSegment();
+    bool CloseSplitsToTimer();
     
     bool SetOneDecimal();
     bool SetTwoDecimal();
