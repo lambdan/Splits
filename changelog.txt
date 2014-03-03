@@ -1,4 +1,4 @@
-1.05 - TBA
+1.05 - mar 03 2014
 * external css file (Go crazy!)
 * default css is loaded from my server (http://lambdan.se/splits.css)
 
