@@ -1,3 +1,8 @@
+1.06 - TBA
+* added ”Reload CSS” which will reload the current css, useful when testing and so on
+* we now remove the old css before applying the new one (default CSS-option works now)
+
+
 1.05 - mar 03 2014
 * external css file (Go crazy!)
 * default css is loaded from my server (http://lambdan.se/splits.css)

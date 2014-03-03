@@ -45,8 +45,9 @@ public:
     bool CanGoToNextSegment();
     bool CanGoToPreviousSegment();
     bool CloseSplitsToTimer();
-    bool ReloadCSS();
+    bool CustomCSS();
     bool DefaultCSS();
+    bool ReloadCSS();
     
     bool SetOneDecimal();
     bool SetTwoDecimal();

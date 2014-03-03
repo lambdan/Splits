@@ -206,12 +206,16 @@
     _core_application->CloseSplitsToTimer();
 }
 
-- (IBAction)ReloadCSS:(id)sender {
-    _core_application->ReloadCSS();
+- (IBAction)CustomCSS:(id)sender {
+    _core_application->CustomCSS();
 }
 
 - (IBAction)DefaultCSS:(id)sender {
     _core_application->DefaultCSS();
+}
+
+- (IBAction)ReloadCSS:(id)sender {
+    _core_application->ReloadCSS();
 }
 
 // - (BOOL)validateMenuItem:(NSMenuItem *)menuItem { // not sure if i need this. commented it out so i can hit Split before start - seems to work fine without it... leaving for now (DJS)

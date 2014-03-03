@@ -36,7 +36,7 @@ CoreApplication::CoreApplication(std::shared_ptr<WebBrowserInterface> browser, s
     _browser->LoadHTML("<html>\
                        <head>\
                        <script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js\"></script>\
-                       <script>var link=\"http://lambdan.se/splits.css\"</script>\
+                       <script>var link=\"http://lambdan.se/splits.css\";</script>\
                        <link rel=\"stylesheet\" type=\"text/css\" href=\"http://lambdan.se/splits.css\">\
                        </head>\
                        <body>\
@@ -420,15 +420,28 @@ bool CoreApplication::SetThreeDecimal() {
     return 0;
 }
 
+bool CoreApplication::CustomCSS() {
+    std::stringstream javascript_ss;
+    javascript_ss << "$('link[rel=\"stylesheet\"]').attr('disabled', 'disabled');"; // disable the CSS
+    javascript_ss << "$('link[rel=stylesheet]').remove();"; // remove it
+    javascript_ss << "var link=prompt(\"URL to your CSS file. You can open the URL below to see the example of an CSS file, which you can then customize to your liking and upload it to Pastebin (copy the raw URL in here then) or copy it into your Dropbox public folder and copy the public URL for it.\",link);if(link!=null){$('head').append( $('<link rel=\"stylesheet\" type=\"text/css\" />').attr('href', link));}else{$('head').append( $('<link rel=\"stylesheet\" type=\"text/css\" />').attr('href', \"http://lambdan.se/splits.css\"));}";
+    _browser->RunJavascript(javascript_ss.str());
+    return 0;
+}
+
 bool CoreApplication::ReloadCSS() {
     std::stringstream javascript_ss;
-    javascript_ss << "var x; var link=prompt(\"URL to your CSS file. You can open the URL below to see the example of an CSS file, which you can then customize to your liking and upload it to Pastebin (copy the raw URL in here then) or copy it into your Dropbox public folder and copy the public URL for it.\",link);if(link!=null){$('head').append( $('<link rel=\"stylesheet\" type=\"text/css\" />').attr('href', link) );}";
+    javascript_ss << "$('link[rel=\"stylesheet\"]').attr('disabled', 'disabled');"; // disable the CSS
+    javascript_ss << "$('link[rel=stylesheet]').remove();"; // remove it
+    javascript_ss << "$('head').append( $('<link rel=\"stylesheet\" type=\"text/css\" />').attr('href', link) );";
     _browser->RunJavascript(javascript_ss.str());
     return 0;
 }
 
 bool CoreApplication::DefaultCSS() {
     std::stringstream javascript_ss;
+    javascript_ss << "$('link[rel=\"stylesheet\"]').attr('disabled', 'disabled');"; // disable the CSS
+    javascript_ss << "$('link[rel=stylesheet]').remove();"; // remove it
     javascript_ss << "var link=\"http://lambdan.se/splits.css\";$('head').append( $('<link rel=\"stylesheet\" type=\"text/css\" />').attr('href', link) );";
     _browser->RunJavascript(javascript_ss.str());
     return 0;
