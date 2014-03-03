@@ -40,7 +40,7 @@ CoreApplication::CoreApplication(std::shared_ptr<WebBrowserInterface> browser, s
                        <link rel=\"stylesheet\" type=\"text/css\" href=\"http://lambdan.se/splits.css\">\
                        </head>\
                        <body>\
-                       <center><div id=\"runtitle\"></div></center>\
+                       <div id=\"runtitle\"></div>\
                        <div id=\"splits_container\">\
                        <table id=\"splits\" class=\"active\"></table>\
                        </div>\
