@@ -46,7 +46,7 @@ CoreApplication::CoreApplication(std::shared_ptr<WebBrowserInterface> browser, s
     _browser->LoadHTML("<html>\
                        <head>\
                        <script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js\"></script>\
-                       <link rel=\"stylesheet\" type=\"text/css\" href=\"https://dl.dropboxusercontent.com/u/60071552/external.css\">\
+                       <link rel=\"stylesheet\" type=\"text/css\" href=\"http://lambdan.se/splits.css\">\
                        </head>\
                        <body>\
                        <center><div id=\"runtitle\"></div></center>\
@@ -431,7 +431,7 @@ bool CoreApplication::SetThreeDecimal() {
 
 bool CoreApplication::ReloadCSS() {
     std::stringstream javascript_ss;
-    javascript_ss << "var x; var link=prompt(\"URL to your CSS file\",\"http://pastebin.com/raw.php?i=ngnXTvfb\");if(link!=null){$('head').append( $('<link rel=\"stylesheet\" type=\"text/css\" />').attr('href', link) ); }else{prompt(\" ERROR\");}";
+    javascript_ss << "var x; var link=prompt(\"URL to your CSS file. You can open the URL below to see the example of an CSS file, which you can then customize to your liking and upload it to Pastebin (copy the raw URL in here then) or copy it into your Dropbox public folder and copy the public URL for it.\",\"http://lambdan.se/splits.css\");if(link!=null){$('head').append( $('<link rel=\"stylesheet\" type=\"text/css\" />').attr('href', link) );}";
     _browser->RunJavascript(javascript_ss.str());
     return 0;
 }
