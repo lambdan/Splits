@@ -1,5 +1,5 @@
 *.splits
-/_php/*
+*.php
 
 # Mac OS X
 *.DS_Store
