@@ -29,6 +29,12 @@
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
                             <menuItem title="Preferences…" keyEquivalent="," id="129"/>
+                            <menuItem title="Open HTML Folder" id="ELo-Ax-q0o">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="openHTMLFolder:" target="494" id="flJ-CS-r12"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="144">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>

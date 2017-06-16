@@ -1,9 +1,7 @@
-Builds available at: [http://lambdan.se/stuff/Splits/](http://lambdan.se/stuff/Splits/)
+Builds available under the [Releases tab](https://github.com/lambdan/Splits/releases), or just download & install Xcode, and then download this entire repo and build it yourself
 
-i've decided to pick this up again since ewaller doesnt seem very active with it, and there are some changes that i really need for me to use this program.
-and even after that, im not sure if i will use it because of alternatives like Llanfair. i guess this is more for fun :)
+Because I am not a registered Apple developer, you might have to adjust your Mac's security settings or make an temporary exception
 
-im not used at all to xcode, c++ or osx programs coding, so this will probably be a bumpy ride.
+## How do I change looks?
 
-/DJS
-
+Run the app, and in the Menu Bar under __Splits__ you will find _Open HTML Folder_. Click that, and you will find a file called `splitscss.css` which you can modify to your liking.

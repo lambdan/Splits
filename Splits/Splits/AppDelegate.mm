@@ -218,6 +218,12 @@
     _core_application->ReloadCSS();
 }
 
+- (IBAction)openHTMLFolder:(id)sender {
+    // Open HTML Folder that is under Splits submenu, where css and html is contained
+    NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"splits" ofType:@"html" inDirectory:@"html"];
+    [[NSWorkspace sharedWorkspace] openFile:[htmlPath stringByDeletingLastPathComponent]];
+}
+
 // - (BOOL)validateMenuItem:(NSMenuItem *)menuItem { // not sure if i need this. commented it out so i can hit Split before start - seems to work fine without it... leaving for now (DJS)
 //    if([menuItem action] == @selector(timerStart:)) {
 //        return _core_application->CanStart();
