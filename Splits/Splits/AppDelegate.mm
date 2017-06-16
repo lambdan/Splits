@@ -24,10 +24,16 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    // Load settings
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"DefaultAlwaysOnTop"] == YES) {
-        [alwaysOnTopMenuItem setState:NSOnState];
-    }
+    // Initialize default settings
+    NSMutableDictionary *defaultsDict = [@{
+                                           @"DefaultAlwaysOnTop":@YES,
+                                           @"DecimalsToShow":@3,
+                                           @"ShowTitle":@TRUE,
+                                           @"ShowAttempts":@FALSE
+                                           } mutableCopy];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaultsDict];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     
     _web_browser = std::shared_ptr<WebBrowserInterface>(new Browser(webView));
     _core_application = new CoreApplication(_web_browser, "");
@@ -38,7 +44,39 @@
     [webView setDrawsBackground:NO];
     //[window setStyleMask:NSBorderlessWindowMask]; // hides title bar, but cant move window then :(
     
+    _titleBarShown = true;
+    
     [NSTimer scheduledTimerWithTimeInterval: 0.033 target: self selector:@selector(onTick:) userInfo: nil repeats:YES];
+    
+
+    // Load Always on Top-setting
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"DefaultAlwaysOnTop"] == YES) {
+        [alwaysOnTopMenuItem setState:NSOnState];
+    }
+    
+    // Load decimals settings
+    switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"DecimalsToShow"]) {
+        case 0:
+            _core_application->SetNoDecimal();
+            break;
+        case 1:
+            _core_application->SetOneDecimal();
+            break;
+        case 2:
+            _core_application->SetTwoDecimal();
+            break;
+        case 3:
+            _core_application->SetThreeDecimal();
+            break;
+    }
+    
+    // Load title/attempts settings
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowTitle"] == true) {
+        _core_application->ShowRunTitle();
+    }
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowAttempts"] == true) {
+        _core_application->ShowRunAttempts();
+    }
 }
 
 -(void)onTick:(NSTimer *)timer {
@@ -164,41 +202,54 @@
 
 - (IBAction)OneDecimal:(id)sender {
     _core_application->SetOneDecimal();
+    [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"DecimalsToShow"];
+    
 }
 
 - (IBAction)TwoDecimal:(id)sender {
     _core_application->SetTwoDecimal();
+    [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"DecimalsToShow"];
 }
 
 - (IBAction)ThreeDecimal:(id)sender {
     _core_application->SetThreeDecimal();
+    [[NSUserDefaults standardUserDefaults] setInteger:3 forKey:@"DecimalsToShow"];
 }
 
 - (IBAction)NoDecimal:(id)sender {
     _core_application->SetNoDecimal();
+    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"DecimalsToShow"];
 }
 
 - (IBAction)ShowRunTitle:(id)sender {
     _core_application->ShowRunTitle();
+    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"ShowTitle"];
 }
 
 - (IBAction)ShowRunAttempts:(id)sender {
     _core_application->ShowRunAttempts();
+    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"ShowAttempts"];
 }
 
 - (IBAction)NoRunTitle:(id)sender {
     _core_application->NoRunTitle();
+    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"ShowTitle"];
 }
 
 - (IBAction)NoRunAttempts:(id)sender {
     _core_application->NoRunAttempts();
+    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"ShowAttempts"];
 }
 
 - (IBAction)ShowBothTitleAttempts:(id)sender {
+    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"ShowTitle"];
+    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"ShowAttempts"];
     _core_application->ShowBothTitleAttempts();
 }
 
 - (IBAction)HideBothTitleAttempts:(id)sender {
+    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"ShowTitle"];
+    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"ShowAttempts"];
     _core_application->HideBothTitleAttempts();
 }
 
@@ -222,6 +273,17 @@
     // Open HTML Folder that is under Splits submenu, where css and html is contained
     NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"splits" ofType:@"html" inDirectory:@"html"];
     [[NSWorkspace sharedWorkspace] openFile:[htmlPath stringByDeletingLastPathComponent]];
+}
+
+- (IBAction)toggleTitleBar:(id)sender {
+    if (_titleBarShown == true) {
+        [window setStyleMask:NSBorderlessWindowMask];
+        _titleBarShown = false;
+    } else if (_titleBarShown == false) {
+        [window setStyleMask:[window styleMask] | NSResizableWindowMask | NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask];
+        [window setTitle:@"Splits"];
+        _titleBarShown = true;
+    }
 }
 
 // - (BOOL)validateMenuItem:(NSMenuItem *)menuItem { // not sure if i need this. commented it out so i can hit Split before start - seems to work fine without it... leaving for now (DJS)

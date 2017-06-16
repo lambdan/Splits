@@ -451,6 +451,8 @@ bool CoreApplication::SetNoDecimal() {
     return 0;
 }
 
+
+// Titles and attempts display
 bool CoreApplication::ShowRunTitle() {
     ShowTitle=1;
     UpdateSplits();
