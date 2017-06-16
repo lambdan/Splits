@@ -16,7 +16,7 @@
 class Browser : public WebBrowserInterface {
 public:
     Browser(WebView *web_view);
-    void LoadHTML(std::string html);
+    void LoadHTML();
     void RunJavascript(std::string javascript);
     bool IsLoadCompleted();
     void set_load_completed(bool value);

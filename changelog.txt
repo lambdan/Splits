@@ -1,3 +1,7 @@
+1.07 - TBA
+- css and jquery are now loaded locally instead of going on the internet
+- disabled css options under Window menu because they're broken at the moment
+
 1.06 - TBA
 * added ”Reload CSS” which will reload the current css, useful when testing and so on
 * we now remove the old css before applying the new one (default CSS-option works now)

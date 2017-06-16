@@ -1,0 +1,111 @@
+/* This is the default CSS for Splits. 
+If you'd wish to use your own you should use this one to get started.
+CSS isn't super hard, but if you're new to it, this should get you started: http://www.w3schools.com/css/ */
+
+/* For colors, use: http://html-color-codes.info/ */
+
+/* Im hoping to make it even more commented eventually. */
+
+body { /* The body of the whole thing */
+   font-family: Helvetica,Arial,sans-serif;
+   font-size: 2em;
+   color: #CCC;
+   background-color: black;
+   margin: 1px;
+   overflow: auto;
+   position: relative;
+}
+
+#timer { /* The main timer at the bottom */
+   text-align: right;
+   background-color: black;
+   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   font-weight: 300;
+   font-size: 1.5em;
+   color: #C679FF;
+   /*font-weight: bold;*/
+   /*height: 45px;*/
+   position: absolute;
+   right:5px;
+   bottom:0;
+}
+
+#splits_container { /* Not really sure what this does */
+
+}
+
+#splits_container::-webkit-scrollbar {
+   width:0 ;
+}
+
+#splits {
+  /* outline: 0px solid transparent; */
+   width: 100%;
+   border-spacing: 0;
+}
+
+#splits td {
+   margin: 0;
+   border-bottom: 1px solid #000;
+   border-top: 1px solid #000;
+   font-color: lime;
+}
+
+.add_split, .remove_split { /* This is shown when Editting splits */
+   text-align: center;
+   min-width: 20px;
+   width: 20px;
+   font-weight: bold;
+   cursor: pointer;
+}
+
+.remove_split {
+   color: red;
+}
+
+.add_split {
+   color: #00FF00;
+}
+
+.split_name {
+   padding-left: 5px;
+}
+
+#runtitle { /* Title & attempts of run, the thing at the top */
+text-align: center;
+font-size: 0.7em;
+color: #FFF778;
+border-bottom: 2px solid black;
+}
+
+.split_time { /* Where the split times are shown */
+   text-align: right;
+   padding-right: 5px;
+}
+
+.split_time.minus { /* Color for ahead splits */
+   color: #00BFFF;
+}
+
+.split_time.plus { /* Color for behind splits */
+   color: #FF4000;
+}
+
+#splits.active .current_split td { /* The box around the current split. */
+   border-bottom: 1px solid #1165B5;
+   border-top: 1px solid #1165B5;
+   color: #FFF; /* Background color of current split */
+}
+
+#splits.editing {
+   color: #FFF;
+}
+
+.milliseconds { /* Change milliseconds of the timer */
+   margin-left: 5px;
+   font-size: 0.65em;
+}
+
+.decimal { /* I dont think this does anything */
+   /*display: none; */ /* uncomment to hide decimal */
+}

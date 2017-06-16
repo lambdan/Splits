@@ -33,21 +33,7 @@ std::vector<std::string> SplitString(const std::string &s, char delim) {
 }
 
 CoreApplication::CoreApplication(std::shared_ptr<WebBrowserInterface> browser, std::string settings_file) : _browser(browser), _settings_file(settings_file), _currentSplitIndex(0), _timer(new Timer), _attempts(0), _title("") {
-    _browser->LoadHTML("<html>\
-                       <head>\
-                       <script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js\"></script>\
-                       <script>var link=\"http://lambdan.se/splits.css\";</script>\
-                       <link rel=\"stylesheet\" type=\"text/css\" href=\"http://lambdan.se/splits.css\">\
-                       </head>\
-                       <body>\
-                       <div id=\"runtitle\"></div>\
-                       <div id=\"splits_container\">\
-                       <table id=\"splits\" class=\"active\"></table>\
-                       </div>\
-                       <div id=\"timer\"></div>\
-                       </body>\
-                       </html>"
-                       );
+    _browser->LoadHTML(); // the html is now loaded from 'html/splits.html'
     firstsplit=1; // this is for start/split same key (DJS)
     splitprotection=0;
 }

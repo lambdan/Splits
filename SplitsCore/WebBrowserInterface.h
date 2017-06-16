@@ -14,7 +14,7 @@
 class WebBrowserInterface
 {
 public:
-    virtual void LoadHTML(std::string html) = 0;
+    virtual void LoadHTML() = 0;
     virtual void RunJavascript(std::string javascript) = 0;
     virtual bool IsLoadCompleted() = 0;
 };

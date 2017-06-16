@@ -20,6 +20,7 @@
 		2C435667162FAE380036B4AE /* Browser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2C435665162FAE380036B4AE /* Browser.mm */; };
 		2C649794162CE37E00A0198E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C649793162CE37E00A0198E /* WebKit.framework */; };
 		2C6497AB162CF5B300A0198E /* libSplitsCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C6497AA162CF5B300A0198E /* libSplitsCore.a */; };
+		6AC55AA81EF4615900CF5A01 /* html in Resources */ = {isa = PBXBuildFile; fileRef = 6AC55AA71EF4615900CF5A01 /* html */; };
 		6AE15681182540B900CDBCF6 /* asd.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6AE15680182540B900CDBCF6 /* asd.icns */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 		2C435666162FAE380036B4AE /* Browser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Browser.h; sourceTree = "<group>"; };
 		2C649793162CE37E00A0198E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		2C6497AA162CF5B300A0198E /* libSplitsCore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSplitsCore.a; path = "../../../../Library/Developer/Xcode/DerivedData/Splits-hjepgkssfgwfdqfmkdvuxhrahsvs/Build/Products/Debug/libSplitsCore.a"; sourceTree = "<group>"; };
+		6AC55AA71EF4615900CF5A01 /* html */ = {isa = PBXFileReference; lastKnownFileType = folder; path = html; sourceTree = "<group>"; };
 		6AE15680182540B900CDBCF6 /* asd.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = asd.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -86,6 +88,7 @@
 		2C0CD0CE162CD3D9001010E1 = {
 			isa = PBXGroup;
 			children = (
+				6AC55AA71EF4615900CF5A01 /* html */,
 				6AE15680182540B900CDBCF6 /* asd.icns */,
 				2C6497AA162CF5B300A0198E /* libSplitsCore.a */,
 				2C649793162CE37E00A0198E /* WebKit.framework */,
@@ -244,6 +247,7 @@
 				6AE15681182540B900CDBCF6 /* asd.icns in Resources */,
 				2C0CD0EE162CD3D9001010E1 /* Credits.rtf in Resources */,
 				2C0CD0F4162CD3D9001010E1 /* MainMenu.xib in Resources */,
+				6AC55AA81EF4615900CF5A01 /* html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
