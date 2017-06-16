@@ -33,7 +33,7 @@
                                            } mutableCopy];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaultsDict];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
+    /// --------------------
     
     _web_browser = std::shared_ptr<WebBrowserInterface>(new Browser(webView));
     _core_application = new CoreApplication(_web_browser, "");
@@ -70,14 +70,72 @@
             break;
     }
     
-    // Load title/attempts settings
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowTitle"] == true) {
-        _core_application->ShowRunTitle();
+    // Load title/attempts
+    switch ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowTitle"]) {
+        case true:
+            _core_application->ShowRunTitle();
+            break;
+        case false:
+            _core_application->NoRunTitle();
+            break;
     }
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowAttempts"] == true) {
-        _core_application->ShowRunAttempts();
+    
+    switch ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowAttempts"]) {
+        case true:
+            _core_application->ShowRunAttempts();
+            break;
+        case false:
+            _core_application->NoRunAttempts();
+            break;
     }
+    
+    // Add a watcher to detect changes to preferences...
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(defaultsChanged:)
+                                                 name:NSUserDefaultsDidChangeNotification
+                                               object:nil];
+
 }
+
+
+- (void)defaultsChanged:(NSNotification *)notification {
+    // Load decimals settings
+    switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"DecimalsToShow"]) {
+        case 0:
+            _core_application->SetNoDecimal();
+            break;
+        case 1:
+            _core_application->SetOneDecimal();
+            break;
+        case 2:
+            _core_application->SetTwoDecimal();
+            break;
+        case 3:
+            _core_application->SetThreeDecimal();
+            break;
+    }
+    
+    // Load title/attempts
+    switch ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowTitle"]) {
+        case true:
+            _core_application->ShowRunTitle();
+            break;
+        case false:
+            _core_application->NoRunTitle();
+            break;
+    }
+    
+    switch ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowAttempts"]) {
+        case true:
+            _core_application->ShowRunAttempts();
+            break;
+        case false:
+            _core_application->NoRunAttempts();
+            break;
+    }
+    
+}
+
 
 -(void)onTick:(NSTimer *)timer {
     _core_application->Update();
@@ -156,6 +214,12 @@
     }
 }
 
+- (IBAction)preferencesButton:(id)sender {
+    NSWindowController *windowController = [[NSWindowController alloc] initWithWindowNibName:@"Preferences"];
+    [windowController showWindow:self];
+}
+
+
 - (IBAction)timerReset:(id)sender {
     _core_application->ResetTimer();
 }
@@ -199,59 +263,6 @@
     _core_application->Edit();
 }
 
-
-- (IBAction)OneDecimal:(id)sender {
-    _core_application->SetOneDecimal();
-    [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"DecimalsToShow"];
-    
-}
-
-- (IBAction)TwoDecimal:(id)sender {
-    _core_application->SetTwoDecimal();
-    [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"DecimalsToShow"];
-}
-
-- (IBAction)ThreeDecimal:(id)sender {
-    _core_application->SetThreeDecimal();
-    [[NSUserDefaults standardUserDefaults] setInteger:3 forKey:@"DecimalsToShow"];
-}
-
-- (IBAction)NoDecimal:(id)sender {
-    _core_application->SetNoDecimal();
-    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"DecimalsToShow"];
-}
-
-- (IBAction)ShowRunTitle:(id)sender {
-    _core_application->ShowRunTitle();
-    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"ShowTitle"];
-}
-
-- (IBAction)ShowRunAttempts:(id)sender {
-    _core_application->ShowRunAttempts();
-    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"ShowAttempts"];
-}
-
-- (IBAction)NoRunTitle:(id)sender {
-    _core_application->NoRunTitle();
-    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"ShowTitle"];
-}
-
-- (IBAction)NoRunAttempts:(id)sender {
-    _core_application->NoRunAttempts();
-    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"ShowAttempts"];
-}
-
-- (IBAction)ShowBothTitleAttempts:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"ShowTitle"];
-    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"ShowAttempts"];
-    _core_application->ShowBothTitleAttempts();
-}
-
-- (IBAction)HideBothTitleAttempts:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"ShowTitle"];
-    [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"ShowAttempts"];
-    _core_application->HideBothTitleAttempts();
-}
 
 - (IBAction)CloseSplitsToTimer:(id)sender {
     _core_application->CloseSplitsToTimer();

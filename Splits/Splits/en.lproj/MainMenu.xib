@@ -28,7 +28,12 @@
                             <menuItem isSeparatorItem="YES" id="236">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Preferences…" keyEquivalent="," id="129"/>
+                            <menuItem title="Preferences…" id="129">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="preferencesButton:" target="494" id="h0V-hB-Kr0"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Open HTML Folder" id="ELo-Ax-q0o">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
@@ -293,83 +298,6 @@
                                     <action selector="performZoom:" target="-1" id="240"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Title &amp; Attempts" id="656">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Title &amp; Attempts" id="657">
-                                    <items>
-                                        <menuItem title="Show Both" id="659">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="ShowBothTitleAttempts:" target="494" id="719"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Show Title" id="716">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="ShowRunTitle:" target="494" id="717"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Show Attempts" id="661">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="ShowRunAttempts:" target="494" id="707"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="718">
-                                            <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                                        </menuItem>
-                                        <menuItem title="Hide Both" id="720">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="HideBothTitleAttempts:" target="494" id="722"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Hide Title" id="708">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="NoRunTitle:" target="494" id="714"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Hide Attempts" id="710">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="NoRunAttempts:" target="494" id="715"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
-                            <menuItem title="Decimals" id="696">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Decimals" id="697">
-                                    <items>
-                                        <menuItem title="No Decimals" id="698">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="NoDecimal:" target="494" id="704"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="1 Decimal" id="700">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="OneDecimal:" target="494" id="703"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="2 Decimals" id="701">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="TwoDecimal:" target="494" id="702"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="3 Decimals" id="699">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="ThreeDecimal:" target="494" id="705"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
                             <menuItem title="Custom CSS" hidden="YES" enabled="NO" id="724">
                                 <connections>
                                     <action selector="CustomCSS:" target="494" id="730"/>
@@ -380,7 +308,7 @@
                                     <action selector="ReloadCSS:" target="494" id="733"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Default CSS" hidden="YES" enabled="NO" id="731">
+                            <menuItem title="Default CSS" state="on" hidden="YES" enabled="NO" id="731">
                                 <connections>
                                     <action selector="DefaultCSS:" target="494" id="732"/>
                                 </connections>

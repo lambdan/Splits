@@ -26,6 +26,9 @@
 @property (assign) IBOutlet NSMenuItem *previousSegmentMenuItem;
 @property (assign) IBOutlet NSMenuItem *nextSegmentMenuItem;
 @property (assign) IBOutlet NSMenuItem *alwaysOnTopMenuItem;
+
+
+
 @property (nonatomic, retain) NSString *fileName;
 - (IBAction)timerStart:(id)sender;
 - (IBAction)timerSplit:(id)sender;
@@ -47,17 +50,6 @@
 - (IBAction)DefaultCSS:(id)sender;
 - (IBAction)ReloadCSS:(id)sender;
 
-- (IBAction)OneDecimal:(id)sender; // bla
-- (IBAction)TwoDecimal:(id)sender;
-- (IBAction)ThreeDecimal:(id)sender;
-- (IBAction)NoDecimal:(id)sender;
-
-- (IBAction)ShowRunTitle:(id)sender;
-- (IBAction)ShowRunAttempts:(id)sender;
-- (IBAction)NoRunTitle:(id)sender;
-- (IBAction)NoRunAttempts:(id)sender;
-- (IBAction)ShowBothTitleAttempts:(id)sender;
-- (IBAction)HideBothTitleAttempts:(id)sender;
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem;
 - (void)windowDidResize:(NSNotification *)notification;

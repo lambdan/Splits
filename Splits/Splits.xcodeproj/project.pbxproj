@@ -21,6 +21,7 @@
 		2C649794162CE37E00A0198E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C649793162CE37E00A0198E /* WebKit.framework */; };
 		2C6497AB162CF5B300A0198E /* libSplitsCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C6497AA162CF5B300A0198E /* libSplitsCore.a */; };
 		6AC55AA81EF4615900CF5A01 /* html in Resources */ = {isa = PBXBuildFile; fileRef = 6AC55AA71EF4615900CF5A01 /* html */; };
+		6ADAC6F01EF49BAB004D748C /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ADAC6EF1EF49BAB004D748C /* Preferences.xib */; };
 		6AE15681182540B900CDBCF6 /* asd.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6AE15680182540B900CDBCF6 /* asd.icns */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,8 @@
 		2C649793162CE37E00A0198E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		2C6497AA162CF5B300A0198E /* libSplitsCore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSplitsCore.a; path = "../../../../Library/Developer/Xcode/DerivedData/Splits-hjepgkssfgwfdqfmkdvuxhrahsvs/Build/Products/Debug/libSplitsCore.a"; sourceTree = "<group>"; };
 		6AC55AA71EF4615900CF5A01 /* html */ = {isa = PBXFileReference; lastKnownFileType = folder; path = html; sourceTree = "<group>"; };
+		6ADAC6EA1EF49394004D748C /* Splits-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Splits-Bridging-Header.h"; sourceTree = "<group>"; };
+		6ADAC6EF1EF49BAB004D748C /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		6AE15680182540B900CDBCF6 /* asd.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = asd.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -137,6 +140,8 @@
 				2C0CD0E4162CD3D9001010E1 /* Supporting Files */,
 				2C435665162FAE380036B4AE /* Browser.mm */,
 				2C435666162FAE380036B4AE /* Browser.h */,
+				6ADAC6EA1EF49394004D748C /* Splits-Bridging-Header.h */,
+				6ADAC6EF1EF49BAB004D748C /* Preferences.xib */,
 			);
 			path = Splits;
 			sourceTree = "<group>";
@@ -219,6 +224,11 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "";
+				TargetAttributes = {
+					2C0CD0D8162CD3D9001010E1 = {
+						LastSwiftMigration = 0830;
+					};
+				};
 			};
 			buildConfigurationList = 2C0CD0D3162CD3D9001010E1 /* Build configuration list for PBXProject "Splits" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -247,6 +257,7 @@
 				6AE15681182540B900CDBCF6 /* asd.icns in Resources */,
 				2C0CD0EE162CD3D9001010E1 /* Credits.rtf in Resources */,
 				2C0CD0F4162CD3D9001010E1 /* MainMenu.xib in Resources */,
+				6ADAC6F01EF49BAB004D748C /* Preferences.xib in Resources */,
 				6AC55AA81EF4615900CF5A01 /* html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -395,19 +406,24 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Splits/Splits-Prefix.pch";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Splits/Splits-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/Splits-glaqgmgswckwxydbllhghfplwxxy/Build/Products/Debug\"",
 					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Splits-hjepgkssfgwfdqfmkdvuxhrahsvs/Build/Products/Debug\"",
 					"\"$(SRCROOT)\"",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Splits/Splits-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/..";
 				WRAPPER_EXTENSION = app;
 			};
@@ -417,19 +433,23 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Splits/Splits-Prefix.pch";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Splits/Splits-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/Splits-glaqgmgswckwxydbllhghfplwxxy/Build/Products/Debug\"",
 					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Splits-hjepgkssfgwfdqfmkdvuxhrahsvs/Build/Products/Debug\"",
 					"\"$(SRCROOT)\"",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Splits/Splits-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/..";
 				WRAPPER_EXTENSION = app;
 			};

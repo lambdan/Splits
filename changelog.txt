@@ -1,4 +1,5 @@
 1.07 - TBA
+- added preferences window
 - whether title and/or attempts should be shown are now saved
 - how many decimals to show are now saved
 - change default window size to be more narrow, as most timers are
@@ -7,10 +8,10 @@
 - disabled css options under Window menu because they're broken at the moment
 - added "Open HTML Folder" where you can change all the html components (such as the css! see README.md)
 
-1.06 - TBA
+1.06 - TBA (the lost version)
 * added ”Reload CSS” which will reload the current css, useful when testing and so on
 * we now remove the old css before applying the new one (default CSS-option works now)
-
+*** as you can just locally edit the css file with 1.07 this version is moot***
 
 1.05 - mar 03 2014
 * external css file (Go crazy!)
