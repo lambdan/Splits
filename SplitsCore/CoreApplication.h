@@ -63,6 +63,9 @@ public:
     
     int splitprotection;
     
+    bool splitsLoaded;
+    bool ReturnSplitsLoaded();
+    
     void Edit();
     int firstsplit;
     int millis_remaining;

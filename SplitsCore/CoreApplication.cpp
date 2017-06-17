@@ -51,6 +51,7 @@ void CoreApplication::LoadSplits(std::string file) {
     parser.GetNextDocument(doc);
     doc["title"] >> _title; // title is retrieved here (DJS)
     doc["attempts"] >> _attempts;
+    printf("LoadSplits: read %i attempts\n", _attempts);
     
     const YAML::Node& splits = doc["splits"];
     
@@ -66,6 +67,7 @@ void CoreApplication::LoadSplits(std::string file) {
     }
     
     file_stream.close();
+    splitsLoaded = true;
     ReloadSplits();
 }
 
@@ -157,6 +159,7 @@ void CoreApplication::LoadWSplitSplits(std::string file) {
     }
     
     file_stream.close();
+    splitsLoaded = true;
     ReloadSplits();
 }
 
@@ -303,34 +306,41 @@ void CoreApplication::Update() {
 }
 
 void CoreApplication::ReloadSplits() {
+    
     std::stringstream javascript_ss;
     
-    
-    run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
-    
-    std::string html = "";
-    for(int i = 0; i < _splits.size(); i++) {
-        html += "<tr><td class=\"split_name\">";
-        html += _splits[i]->name();
-        html += "</td><td class=\"split_time\">";
-        html += DisplayMilliseconds(_splits[i]->time(), false);
-        html += "</td></tr>";
+    if (splitsLoaded == false) {
+        ShowTitle = 0;
+        ShowAttempts = 0;
+        _splits.clear();
+        javascript_ss << "document.getElementById('splits').innerHTML = '';";
+    } else if (splitsLoaded == true) {
+        run_attempts = std::to_string(_attempts); // convert integer to string (DJS)
+        
+        std::string html = "";
+        for(int i = 0; i < _splits.size(); i++) {
+            html += "<tr><td class=\"split_name\">";
+            html += _splits[i]->name();
+            html += "</td><td class=\"split_time\">";
+            html += DisplayMilliseconds(_splits[i]->time(), false);
+            html += "</td></tr>";
+        }
+        
+        javascript_ss << "document.getElementById('splits').innerHTML = '";
+        javascript_ss << html;
+        javascript_ss << "';";
     }
     
-    javascript_ss << "document.getElementById('splits').innerHTML = '";
-    javascript_ss << html;
-    javascript_ss << "';";
-    
     _browser->RunJavascript(javascript_ss.str());
-    
     _currentSplitIndex = 0;
     UpdateSplits();
 }
 
 void CoreApplication::UpdateEdittedSplits(std::string title, int attempts) {
+    printf("UpdateEdittedSplits: received %i attempts\n", attempts);
     _title = title;
     _attempts = attempts;
-    UpdateSplits();
+    ReloadSplits();
 }
 
 void CoreApplication::UpdateSplits() {
@@ -372,6 +382,7 @@ void CoreApplication::UpdateSplits() {
     }
     _browser->RunJavascript(javascript_ss.str());
 }
+
 bool CoreApplication::CanStart() {
     return _timer->status() != kRunning && _timer->status() != kFinished;
 }
@@ -417,15 +428,13 @@ bool CoreApplication::SetThreeDecimal() {
 bool CoreApplication::CloseSplitsToTimer() {
     // Close and open just timer
     _currentSplitIndex=0;
-    _timer->Reset();
     _attempts=0;
     _title = "";
-    std::stringstream javascript_ss;
-    javascript_ss << "document.getElementById('splits').innerHTML = ''";
-    javascript_ss << "';";
-    _browser->RunJavascript(javascript_ss.str());
+    _splits.clear();
     firstsplit=1;
     splitprotection=0;
+    splitsLoaded = false;
+    _timer->Reset();
     ReloadSplits();
     return 0;
 }
@@ -489,9 +498,12 @@ std::string CoreApplication::ReturnTitle() {
 int CoreApplication::ReturnAttempts() {
     int attempts;
     attempts = _attempts;
-    return attempts;
+    return _attempts;
 }
 
+bool CoreApplication::ReturnSplitsLoaded() {
+    return splitsLoaded;
+}
 
 void CoreApplication::Edit() {
     _browser->RunJavascript("$('#splits').removeClass('active').addClass('editing');$('#splits tr').append('<td class=\"remove_split\">-</td><td class=\"add_split\">+</td>');$('#splits').append('<tr><td></td><td></td><td></td><td class=\"add_split\">+</td>');$('.split_name, .split_time').attr('contentEditable', true);$('.split_name').first().focus();");

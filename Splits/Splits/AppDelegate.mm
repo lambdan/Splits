@@ -45,6 +45,14 @@
     _textSize = 100;
     fileName = NULL;
     
+    
+    if (_core_application->ReturnSplitsLoaded() == false) {
+        // Clear leftovers from last run
+        [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"CurrentTitle"];
+        [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"CurrentAttempts"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
     [window setBackgroundColor:[NSColor blackColor]];
     [webView setDrawsBackground:NO];
     //[window setStyleMask:NSBorderlessWindowMask]; // hides title bar, but cant move window then :(
@@ -143,6 +151,7 @@
     
     NSString *updatedTitle = [[NSUserDefaults standardUserDefaults] stringForKey:@"CurrentTitle"];
     NSInteger updatedAttempts = (NSInteger) [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentAttempts"];
+    NSLog(@"updating attempts :%ld", updatedAttempts);
     _core_application->UpdateEdittedSplits([updatedTitle UTF8String], updatedAttempts);
     
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -175,16 +184,21 @@
     [openDlg setAllowsMultipleSelection:NO];
     [openDlg setCanChooseDirectories:NO];
     
-    if([openDlg runModal] == NSOKButton) {
+    if([openDlg runModal] == NSModalResponseOK) {
         NSString *file = [[openDlg URL] path];
         _core_application->LoadSplits([file cStringUsingEncoding:NSUTF8StringEncoding]);
+        NSString *title = [NSString stringWithUTF8String:_core_application->ReturnTitle().c_str()];
+        NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
+        NSLog(@"openDocument: ReturnAttempts reports %i", attempts);
+        
         
         // Update NSUserDefaults with title, attempts and splits so we can edit them
-        NSString *title = [NSString stringWithUTF8String:_core_application->ReturnTitle().c_str()];
+        //NSString *title = [NSString stringWithUTF8String:_core_application->ReturnTitle().c_str()];
         [[NSUserDefaults standardUserDefaults] setObject:title forKey:@"CurrentTitle"];
         
-        NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
+        //NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
         [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
+        NSLog(@"attempts :%ld", attempts);
         
         [[NSUserDefaults standardUserDefaults] synchronize];
         
@@ -234,7 +248,20 @@
         NSString *file = [[openDlg URL] path];
         fileName = NULL;
         _core_application->LoadWSplitSplits([file cStringUsingEncoding:NSUTF8StringEncoding]);
+        NSString *title = [NSString stringWithUTF8String:_core_application->ReturnTitle().c_str()];
+        NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
+        NSLog(@"importWSplit: ReturnAttempts reports %i", attempts);
         
+        
+        // Update NSUserDefaults with title, attempts and splits so we can edit them
+        //NSString *title = [NSString stringWithUTF8String:_core_application->ReturnTitle().c_str()];
+        [[NSUserDefaults standardUserDefaults] setObject:title forKey:@"CurrentTitle"];
+        
+        //NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
+        [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
+        NSLog(@"importWSplit attempts :%ld", attempts);
+        
+        [[NSUserDefaults standardUserDefaults] synchronize];
         
     }
 }
@@ -257,6 +284,9 @@
 
 - (IBAction)timerReset:(id)sender {
     _core_application->ResetTimer();
+    NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
+    [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
+    
 }
 
 - (IBAction)timerPause:(id)sender {
@@ -297,6 +327,14 @@
 
 - (IBAction)CloseSplitsToTimer:(id)sender {
     _core_application->CloseSplitsToTimer();
+    NSString *title = [NSString stringWithUTF8String:_core_application->ReturnTitle().c_str()];
+    NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
+    
+    [[NSUserDefaults standardUserDefaults] setObject:title forKey:@"CurrentTitle"];
+
+    [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 
