@@ -45,9 +45,6 @@ public:
     bool CanGoToNextSegment();
     bool CanGoToPreviousSegment();
     bool CloseSplitsToTimer();
-    bool CustomCSS();
-    bool DefaultCSS();
-    bool ReloadCSS();
     
     bool SetOneDecimal();
     bool SetTwoDecimal();
@@ -72,6 +69,10 @@ public:
     int millisToShow;
     std::string DisplayMilliseconds(unsigned long milliseconds, bool includeMilliseconds);
     std::string homedir;
+    
+    std::string ReturnTitle();
+    int ReturnAttempts();
+    void UpdateEdittedSplits(std::string title, int attempts);
 private:
     void ReloadSplits();
     void UpdateSplits();

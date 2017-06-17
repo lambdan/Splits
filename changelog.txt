@@ -1,4 +1,5 @@
 1.07 - TBA
+- added Edit Splits window where you can edit Title and Attempts
 - added preferences window
 - whether title and/or attempts should be shown are now saved
 - how many decimals to show are now saved

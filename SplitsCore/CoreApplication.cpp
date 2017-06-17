@@ -325,6 +325,12 @@ void CoreApplication::ReloadSplits() {
     UpdateSplits();
 }
 
+void CoreApplication::UpdateEdittedSplits(std::string title, int attempts) {
+    _title = title;
+    _attempts = attempts;
+    UpdateSplits();
+}
+
 void CoreApplication::UpdateSplits() {
     // Update current split class.
     std::stringstream javascript_ss;
@@ -406,39 +412,16 @@ bool CoreApplication::SetThreeDecimal() {
     return 0;
 }
 
-bool CoreApplication::CustomCSS() {
-    std::stringstream javascript_ss;
-    javascript_ss << "$('link[rel=\"stylesheet\"]').attr('disabled', 'disabled');"; // disable the CSS
-    javascript_ss << "$('link[rel=stylesheet]').remove();"; // remove it
-    javascript_ss << "var link=prompt(\"URL to your CSS file. You can open the URL below to see the example of an CSS file, which you can then customize to your liking and upload it to Pastebin (copy the raw URL in here then) or copy it into your Dropbox public folder and copy the public URL for it.\",link);if(link!=null){$('head').append( $('<link rel=\"stylesheet\" type=\"text/css\" />').attr('href', link));}else{$('head').append( $('<link rel=\"stylesheet\" type=\"text/css\" />').attr('href', \"http://lambdan.se/splits.css\"));}";
-    _browser->RunJavascript(javascript_ss.str());
-    return 0;
-}
-
-bool CoreApplication::ReloadCSS() {
-    std::stringstream javascript_ss;
-    javascript_ss << "$('link[rel=\"stylesheet\"]').attr('disabled', 'disabled');"; // disable the CSS
-    javascript_ss << "$('link[rel=stylesheet]').remove();"; // remove it
-    javascript_ss << "$('head').append( $('<link rel=\"stylesheet\" type=\"text/css\" />').attr('href', link) );";
-    _browser->RunJavascript(javascript_ss.str());
-    return 0;
-}
-
-bool CoreApplication::DefaultCSS() {
-    std::stringstream javascript_ss;
-    javascript_ss << "$('link[rel=\"stylesheet\"]').attr('disabled', 'disabled');"; // disable the CSS
-    javascript_ss << "$('link[rel=stylesheet]').remove();"; // remove it
-    javascript_ss << "var link=\"http://lambdan.se/splits.css\";$('head').append( $('<link rel=\"stylesheet\" type=\"text/css\" />').attr('href', link) );";
-    _browser->RunJavascript(javascript_ss.str());
-    return 0;
-}
-
 bool CoreApplication::CloseSplitsToTimer() {
     // Close and open just timer
     _currentSplitIndex=0;
     _timer->Reset();
     _attempts=0;
     _title = "";
+    std::stringstream javascript_ss;
+    javascript_ss << "document.getElementById('splits').innerHTML = ''";
+    javascript_ss << "';";
+    _browser->RunJavascript(javascript_ss.str());
     firstsplit=1;
     splitprotection=0;
     ReloadSplits();
@@ -468,6 +451,7 @@ bool CoreApplication::ShowRunAttempts() {
 
 bool CoreApplication::NoRunTitle() {
     ShowTitle=0; // yes i know i can use bool's instead of int's. but this works so who cares (DJS)
+    // i was an idiot in 2013-2014 /DJS 2017
     //ResetTimer();
     UpdateSplits();
     return 0;
@@ -492,6 +476,18 @@ bool CoreApplication::HideBothTitleAttempts() {
     ShowTitle=0;
     UpdateSplits();
     return 0;
+}
+
+std::string CoreApplication::ReturnTitle() {
+    std::stringstream title;
+    title << _title;
+    return title.str();
+}
+
+int CoreApplication::ReturnAttempts() {
+    int attempts;
+    attempts = _attempts;
+    return attempts;
 }
 
 

@@ -46,9 +46,6 @@
 - (IBAction)save:(id)sender;
 - (IBAction)saveAs:(id)sender;
 - (IBAction)CloseSplitsToTimer:(id)sender;
-- (IBAction)CustomCSS:(id)sender;
-- (IBAction)DefaultCSS:(id)sender;
-- (IBAction)ReloadCSS:(id)sender;
 
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem;

@@ -25,11 +25,16 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Initialize default settings
+    //NSMutableArray *currentSplitsArray = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"YourKey"] mutableCopy];
+    NSMutableArray *currentSplitsArray = [[NSMutableArray alloc] initWithCapacity: 3];
     NSMutableDictionary *defaultsDict = [@{
                                            @"DefaultAlwaysOnTop":@YES,
                                            @"DecimalsToShow":@3,
                                            @"ShowTitle":@TRUE,
-                                           @"ShowAttempts":@FALSE
+                                           @"ShowAttempts":@FALSE,
+                                           @"CurrentTitle":@"",
+                                           @"CurrentAttempts":@0,
+                                           @"CurrentSplits":currentSplitsArray
                                            } mutableCopy];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaultsDict];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -70,7 +75,7 @@
             break;
     }
     
-    // Load title/attempts
+    // Load title/attempts display preference
     switch ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowTitle"]) {
         case true:
             _core_application->ShowRunTitle();
@@ -98,7 +103,8 @@
 }
 
 
-- (void)defaultsChanged:(NSNotification *)notification {
+
+- (void)defaultsChanged:(NSNotification *)notification { // Detects changes to preferences or splits (through New/Edit Splits menu) and updates
     // Load decimals settings
     switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"DecimalsToShow"]) {
         case 0:
@@ -115,7 +121,7 @@
             break;
     }
     
-    // Load title/attempts
+    // Load title/attempts display settings
     switch ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowTitle"]) {
         case true:
             _core_application->ShowRunTitle();
@@ -133,6 +139,13 @@
             _core_application->NoRunAttempts();
             break;
     }
+    
+    
+    NSString *updatedTitle = [[NSUserDefaults standardUserDefaults] stringForKey:@"CurrentTitle"];
+    NSInteger updatedAttempts = (NSInteger) [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentAttempts"];
+    _core_application->UpdateEdittedSplits([updatedTitle UTF8String], updatedAttempts);
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
 }
 
@@ -165,6 +178,16 @@
     if([openDlg runModal] == NSOKButton) {
         NSString *file = [[openDlg URL] path];
         _core_application->LoadSplits([file cStringUsingEncoding:NSUTF8StringEncoding]);
+        
+        // Update NSUserDefaults with title, attempts and splits so we can edit them
+        NSString *title = [NSString stringWithUTF8String:_core_application->ReturnTitle().c_str()];
+        [[NSUserDefaults standardUserDefaults] setObject:title forKey:@"CurrentTitle"];
+        
+        NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
+        [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
+        
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
     }
 }
 
@@ -211,6 +234,8 @@
         NSString *file = [[openDlg URL] path];
         fileName = NULL;
         _core_application->LoadWSplitSplits([file cStringUsingEncoding:NSUTF8StringEncoding]);
+        
+        
     }
 }
 
@@ -219,6 +244,16 @@
     [windowController showWindow:self];
 }
 
+- (IBAction)newSplitsButton:(id)sender {
+    NSWindowController *windowController = [[NSWindowController alloc] initWithWindowNibName:@"NewEditSplits"];
+    [windowController showWindow:self];
+}
+
+- (IBAction)edit:(id)sender {
+    NSWindowController *windowController = [[NSWindowController alloc] initWithWindowNibName:@"NewEditSplits"];
+    [windowController showWindow:self];
+    //_core_application->Edit();
+}
 
 - (IBAction)timerReset:(id)sender {
     _core_application->ResetTimer();
@@ -259,26 +294,11 @@
     [alwaysOnTopMenuItem setState:currentState ? NSOffState : NSOnState];
 }
 
-- (IBAction)edit:(id)sender {
-    _core_application->Edit();
-}
-
 
 - (IBAction)CloseSplitsToTimer:(id)sender {
     _core_application->CloseSplitsToTimer();
 }
 
-- (IBAction)CustomCSS:(id)sender {
-    _core_application->CustomCSS();
-}
-
-- (IBAction)DefaultCSS:(id)sender {
-    _core_application->DefaultCSS();
-}
-
-- (IBAction)ReloadCSS:(id)sender {
-    _core_application->ReloadCSS();
-}
 
 - (IBAction)openHTMLFolder:(id)sender {
     // Open HTML Folder that is under Splits submenu, where css and html is contained

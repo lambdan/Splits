@@ -75,11 +75,10 @@
                         <items>
                             <menuItem title="New" enabled="NO" keyEquivalent="n" id="82">
                                 <connections>
-                                    <action selector="newDocument:" target="-1" id="373"/>
+                                    <action selector="newSplitsButton:" target="494" id="BF6-pS-uOe"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Edit Splits" enabled="NO" id="632">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                            <menuItem title="Edit Splits" enabled="NO" keyEquivalent="e" id="632">
                                 <connections>
                                     <action selector="edit:" target="494" id="633"/>
                                 </connections>
@@ -296,21 +295,6 @@
                             <menuItem title="Zoom" id="239">
                                 <connections>
                                     <action selector="performZoom:" target="-1" id="240"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Custom CSS" hidden="YES" enabled="NO" id="724">
-                                <connections>
-                                    <action selector="CustomCSS:" target="494" id="730"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Reload CSS" hidden="YES" enabled="NO" id="727">
-                                <connections>
-                                    <action selector="ReloadCSS:" target="494" id="733"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Default CSS" state="on" hidden="YES" enabled="NO" id="731">
-                                <connections>
-                                    <action selector="DefaultCSS:" target="494" id="732"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="712">
