@@ -66,6 +66,13 @@ public:
     bool splitsLoaded;
     bool ReturnSplitsLoaded();
     
+    std::string AddSplitNameToArray(std::string name);
+    std::string AddSplitTimeToArray(int time);
+    std::string split_names;
+    std::string split_times;
+    std::string ReturnSplitNames();
+    std::string ReturnSplitTimes();
+    
     void Edit();
     int firstsplit;
     int millis_remaining;

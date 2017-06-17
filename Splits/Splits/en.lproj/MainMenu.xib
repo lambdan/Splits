@@ -286,8 +286,7 @@
                                     <action selector="performMiniaturize:" target="-1" id="37"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Toggle Titlebar" id="w6z-Tt-EWf">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                            <menuItem title="Toggle Titlebar" keyEquivalent="t" id="w6z-Tt-EWf">
                                 <connections>
                                     <action selector="toggleTitleBar:" target="494" id="k4S-Jk-M5d"/>
                                 </connections>

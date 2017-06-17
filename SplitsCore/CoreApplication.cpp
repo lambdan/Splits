@@ -63,6 +63,8 @@ void CoreApplication::LoadSplits(std::string file) {
         unsigned long milliseconds;
         splits[i]["time"] >> milliseconds;
         split->set_time(milliseconds);
+        AddSplitNameToArray(name);
+        AddSplitTimeToArray(milliseconds);
         _splits.push_back(split);
     }
     
@@ -106,6 +108,7 @@ void CoreApplication::SaveSplits(std::string file) {
     
     file_stream << out.c_str();
     file_stream.close();
+    
 }
 
 void CoreApplication::LoadWSplitSplits(std::string file) {
@@ -166,6 +169,8 @@ void CoreApplication::LoadWSplitSplits(std::string file) {
 void CoreApplication::SaveWSplitSplits(std::string file) {
     
 }
+
+
 
 void CoreApplication::StartTimer() {
     _timer->Start();
@@ -503,6 +508,26 @@ int CoreApplication::ReturnAttempts() {
 
 bool CoreApplication::ReturnSplitsLoaded() {
     return splitsLoaded;
+}
+
+std::string CoreApplication::AddSplitNameToArray(std::string name) {
+    split_names += name;
+    split_names += "🐊"; // Separator 😙
+    printf("AddSplitNameToArray: %s\n", split_names.c_str());
+}
+
+std::string CoreApplication::AddSplitTimeToArray(int time) {
+    split_times += std::to_string(time);
+    split_times += "🐊"; // Separator 😙
+    printf("AddSplitTimeToArray: %s\n", split_times.c_str());
+}
+
+std::string CoreApplication::ReturnSplitNames() {
+    return split_names;
+}
+
+std::string CoreApplication::ReturnSplitTimes() {
+    return split_times;
 }
 
 void CoreApplication::Edit() {

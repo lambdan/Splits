@@ -23,7 +23,7 @@
 		6AC55AA81EF4615900CF5A01 /* html in Resources */ = {isa = PBXBuildFile; fileRef = 6AC55AA71EF4615900CF5A01 /* html */; };
 		6ADAC6F01EF49BAB004D748C /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ADAC6EF1EF49BAB004D748C /* Preferences.xib */; };
 		6ADAC6F21EF5397C004D748C /* NewEditSplits.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ADAC6F11EF5397C004D748C /* NewEditSplits.xib */; };
-		6ADAC6F41EF54F0D004D748C /* NewEditSplits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADAC6F31EF54F0D004D748C /* NewEditSplits.swift */; };
+		6ADAC6FA1EF5CADF004D748C /* NewEditSplitsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6ADAC6F91EF5CADF004D748C /* NewEditSplitsController.mm */; };
 		6AE15681182540B900CDBCF6 /* asd.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6AE15680182540B900CDBCF6 /* asd.icns */; };
 /* End PBXBuildFile section */
 
@@ -65,7 +65,8 @@
 		6ADAC6EA1EF49394004D748C /* Splits-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Splits-Bridging-Header.h"; sourceTree = "<group>"; };
 		6ADAC6EF1EF49BAB004D748C /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		6ADAC6F11EF5397C004D748C /* NewEditSplits.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewEditSplits.xib; sourceTree = "<group>"; };
-		6ADAC6F31EF54F0D004D748C /* NewEditSplits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewEditSplits.swift; sourceTree = "<group>"; };
+		6ADAC6F81EF5CADF004D748C /* NewEditSplitsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewEditSplitsController.h; sourceTree = "<group>"; };
+		6ADAC6F91EF5CADF004D748C /* NewEditSplitsController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NewEditSplitsController.mm; sourceTree = "<group>"; };
 		6AE15680182540B900CDBCF6 /* asd.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = asd.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -147,7 +148,8 @@
 				2C0CD0F2162CD3D9001010E1 /* MainMenu.xib */,
 				6ADAC6EF1EF49BAB004D748C /* Preferences.xib */,
 				6ADAC6F11EF5397C004D748C /* NewEditSplits.xib */,
-				6ADAC6F31EF54F0D004D748C /* NewEditSplits.swift */,
+				6ADAC6F81EF5CADF004D748C /* NewEditSplitsController.h */,
+				6ADAC6F91EF5CADF004D748C /* NewEditSplitsController.mm */,
 			);
 			path = Splits;
 			sourceTree = "<group>";
@@ -301,9 +303,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C0CD0EA162CD3D9001010E1 /* main.m in Sources */,
-				6ADAC6F41EF54F0D004D748C /* NewEditSplits.swift in Sources */,
 				2C0CD0F1162CD3D9001010E1 /* AppDelegate.mm in Sources */,
 				2C435667162FAE380036B4AE /* Browser.mm in Sources */,
+				6ADAC6FA1EF5CADF004D748C /* NewEditSplitsController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

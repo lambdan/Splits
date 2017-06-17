@@ -9,7 +9,6 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 #include <SplitsCore/CoreApplication.h>
-#include <SplitsCore/WebBrowserInterface.h>
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
@@ -58,3 +57,4 @@ CoreApplication *_core_application;
 std::shared_ptr<WebBrowserInterface> _web_browser;
 int _textSize;
 bool _titleBarShown;
+

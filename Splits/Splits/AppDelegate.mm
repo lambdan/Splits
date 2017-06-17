@@ -26,7 +26,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Initialize default settings
     //NSMutableArray *currentSplitsArray = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"YourKey"] mutableCopy];
-    NSMutableArray *currentSplitsArray = [[NSMutableArray alloc] initWithCapacity: 3];
+    NSMutableArray *splits_placeholder = [[NSMutableArray alloc] initWithCapacity:99];
     NSMutableDictionary *defaultsDict = [@{
                                            @"DefaultAlwaysOnTop":@YES,
                                            @"DecimalsToShow":@3,
@@ -34,7 +34,7 @@
                                            @"ShowAttempts":@FALSE,
                                            @"CurrentTitle":@"",
                                            @"CurrentAttempts":@0,
-                                           @"CurrentSplits":currentSplitsArray
+                                           @"CurrentSplits":splits_placeholder
                                            } mutableCopy];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaultsDict];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -50,6 +50,7 @@
         // Clear leftovers from last run
         [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"CurrentTitle"];
         [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"CurrentAttempts"];
+        [[NSUserDefaults standardUserDefaults] setObject:splits_placeholder forKey:@"CurrentSplits"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
@@ -113,6 +114,7 @@
 
 
 - (void)defaultsChanged:(NSNotification *)notification { // Detects changes to preferences or splits (through New/Edit Splits menu) and updates
+    NSLog(@"NSNotificationCenter: something has changed");
     // Load decimals settings
     switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"DecimalsToShow"]) {
         case 0:
@@ -151,7 +153,7 @@
     
     NSString *updatedTitle = [[NSUserDefaults standardUserDefaults] stringForKey:@"CurrentTitle"];
     NSInteger updatedAttempts = (NSInteger) [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentAttempts"];
-    NSLog(@"updating attempts :%ld", updatedAttempts);
+    NSLog(@"NSNotificationCenter: updating attempts to %ld", updatedAttempts);
     _core_application->UpdateEdittedSplits([updatedTitle UTF8String], updatedAttempts);
     
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -191,6 +193,29 @@
         NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
         NSLog(@"openDocument: ReturnAttempts reports %i", attempts);
         
+        // splits logic here (key name: CurrentSplitNames and CurrentSplitTimes
+        NSString *names = [NSString stringWithUTF8String:_core_application->ReturnSplitNames().c_str()];
+        NSString *times = [NSString stringWithUTF8String:_core_application->ReturnSplitTimes().c_str()];
+        NSLog(@"openDocument: Got Split Names:");
+        NSLog(names);
+        NSLog(@"openDocument: Got Split Times:");
+        NSLog(times);
+        // Convert strings separated by crocodiles to array with split names
+        NSMutableArray *splitNamesArray = [names componentsSeparatedByString:@"🐊"];
+        [splitNamesArray removeLastObject]; // remove last entry as it will be empty
+        NSMutableArray *splitTimesArray = [times componentsSeparatedByString:@"🐊"];
+        [splitTimesArray removeLastObject];
+        
+        // Merge the two arrays into one with keys
+        NSMutableArray *splits = [NSMutableArray array];
+        for (NSUInteger i = 0; i < splitNamesArray.count; i++) {
+            [splits addObject: @{@"name" : splitNamesArray[i], @"time" : splitTimesArray[i]}];
+        }
+        //NSLog(@"splits length: %i", splits.count);
+        
+        // Update userdefaults
+        [[NSUserDefaults standardUserDefaults] setObject:splits forKey:@"CurrentSplits"];
+        
         
         // Update NSUserDefaults with title, attempts and splits so we can edit them
         //NSString *title = [NSString stringWithUTF8String:_core_application->ReturnTitle().c_str()];
@@ -212,7 +237,7 @@
         [savePanel setExtensionHidden:NO];
         [savePanel setAllowedFileTypes: [[NSArray alloc] initWithObjects:@"splits", nil]];
         long result = [savePanel runModal];
-        if(result == NSOKButton) {
+        if(result == NSModalResponseOK) {
             [fileName release];
             fileName = [NSString stringWithString:[[savePanel URL] path]];;
             [fileName retain];
@@ -228,7 +253,7 @@
     [savePanel setExtensionHidden:NO];
     [savePanel setAllowedFileTypes: [[NSArray alloc] initWithObjects:@"splits", nil]];
     long result = [savePanel runModal];
-    if(result == NSOKButton) {
+    if(result == NSModalResponseOK) {
         [fileName release];
         fileName = [NSString stringWithString:[[savePanel URL] path]];;
         [fileName retain];
@@ -244,7 +269,7 @@
     [openDlg setAllowsMultipleSelection:NO];
     [openDlg setCanChooseDirectories:NO];
     
-    if([openDlg runModal] == NSOKButton) {
+    if([openDlg runModal] == NSModalResponseOK) {
         NSString *file = [[openDlg URL] path];
         fileName = NULL;
         _core_application->LoadWSplitSplits([file cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -261,6 +286,7 @@
         [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
         NSLog(@"importWSplit attempts :%ld", attempts);
         
+
         [[NSUserDefaults standardUserDefaults] synchronize];
         
     }
@@ -274,6 +300,8 @@
 - (IBAction)newSplitsButton:(id)sender {
     NSWindowController *windowController = [[NSWindowController alloc] initWithWindowNibName:@"NewEditSplits"];
     [windowController showWindow:self];
+    
+    //NSArray *splits = [[NSUserDefaults standardUserDefaults] arrayForKey:@"CurrentSplits"];
 }
 
 - (IBAction)edit:(id)sender {
