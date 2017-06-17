@@ -174,10 +174,12 @@ void CoreApplication::StopTimer() {
 }
 
 void CoreApplication::ResetTimer() {
-    _timer->Reset();
     firstsplit=1; // this is for start/split being the same hotkey (DJS)
     _currentSplitIndex = 0;
-    _attempts++;
+    if(_timer->status() == kRunning) { // If timer was runnning, increment attempts
+        _attempts++;
+    }
+    _timer->Reset();
     //UpdateSplits();
     ReloadSplits();
 }

@@ -1,4 +1,5 @@
 1.07 - TBA
+- attempts counter only increments if timer was running
 - added Edit Splits window where you can edit Title and Attempts
 - added preferences window
 - whether title and/or attempts should be shown are now saved
