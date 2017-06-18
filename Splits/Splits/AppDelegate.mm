@@ -160,12 +160,19 @@
     
     NSString *split_names = [[ [ [ NSUserDefaults standardUserDefaults] objectForKey:@"CurrentSplits"] valueForKey:@"name"] componentsJoinedByString:@"@"];
     
-    NSMutableArray *times = [[[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentSplits"] valueForKey:@"time"];
+    NSMutableArray *stored_times = [[[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentSplits"] valueForKey:@"time"];
+    NSMutableArray *times = [[NSMutableArray alloc] init];
+    // Convert hh:mm:ss.xxx to ms
+    for (NSUInteger i = 0; i < stored_times.count; i++) {
+        NSString *timeFormatted = [stored_times objectAtIndex:i];
+        NSUInteger timeInMs = [self HHMMSSXXXtoMS:timeFormatted];
+        [times addObject:[NSString stringWithFormat:@"%d", timeInMs]];
+    }
 
     // Combine times array into one string that can be sent to SplitsCore
     NSString *split_times = [times componentsJoinedByString:@"@"];
     
-    NSLog(@"My array: %@", split_times);
+    NSLog(@"NSNotificationCenterSending this string to SplitsCore: %@", split_times);
     
     _core_application->UpdateEdittedSplits([updatedTitle UTF8String], updatedAttempts, split_count, [split_names UTF8String], [split_times UTF8String]);
     
@@ -177,6 +184,37 @@
 -(void)onTick:(NSTimer *)timer {
     _core_application->Update();
     [self updateDisplay];
+}
+
+- (NSString*)msToHHMMSSXXX:(NSString*) inputTime {
+    NSLog(@"msToHHMSSXXX: received %@", inputTime);
+    
+    NSUInteger millis = [inputTime intValue];
+    NSUInteger s = (millis/1000) % 60;
+    NSUInteger m = (millis/ (1000*60)) % 60;
+    NSUInteger h = (millis/ (1000*60*60)) % 24;
+    NSUInteger ms = (millis % 1000);
+    //NSLog(@"%i %i %i %i", h,m,s,ms);
+    return [NSString stringWithFormat:@"%02d:%02d:%02d.%03d", h,m,s,ms];
+}
+
+- (NSUInteger)HHMMSSXXXtoMS:(NSString*) inputTime {
+    NSLog(@"HHMMSSXXXtoMS: received %@", inputTime);
+    NSArray *components = [inputTime componentsSeparatedByString:@":"];
+    NSArray *secComponents = [components[2] componentsSeparatedByString:@"."];
+    
+    NSUInteger h = [components[0] intValue];
+    NSUInteger m = [components[1] intValue];
+    NSUInteger s = [secComponents[0] intValue];
+    NSUInteger ms = [secComponents[1] intValue];
+    
+    ms += s*1000;
+    ms += (m*1000*60);
+    ms += (h*1000*60*60);
+    
+    //NSLog(@"HHMMSSXXXtoMS: converted %@ to %d", inputTime, ms);
+    NSLog(@"HHMMSSXXXtoMS: returning %lu", ms);
+    return ms;
 }
 
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame {
@@ -214,15 +252,18 @@
         NSLog(@"openDocument: Got Split Times:");
         NSLog(times);
         // Convert strings separated by crocodiles to array with split names
-        NSMutableArray *splitNamesArray = [names componentsSeparatedByString:@"🐊"];
+        NSMutableArray *splitNamesArray = [[names componentsSeparatedByString:@"🐊"] mutableCopy];
         [splitNamesArray removeLastObject]; // remove last entry as it will be empty
-        NSMutableArray *splitTimesArray = [times componentsSeparatedByString:@"🐊"];
+        NSMutableArray *splitTimesArray = [[times componentsSeparatedByString:@"🐊"] mutableCopy];
         [splitTimesArray removeLastObject];
         
         // Merge the two arrays into one with keys
         NSMutableArray *splits = [NSMutableArray array];
         for (NSUInteger i = 0; i < splitNamesArray.count; i++) {
-            [splits addObject: @{@"name" : splitNamesArray[i], @"time" : splitTimesArray[i]}];
+            // Convert ms to hhmmss
+            NSString *formattedTime = [self msToHHMMSSXXX:splitTimesArray[i] ];
+            NSLog(@"formatted time: %s", formattedTime);
+            [splits addObject: @{@"name" : splitNamesArray[i], @"time" : formattedTime}];
         }
         //NSLog(@"splits length: %i", splits.count);
         

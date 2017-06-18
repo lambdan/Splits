@@ -51,10 +51,12 @@
 - (void)windowDidResize:(NSNotification *)notification;
 - (void)updateDisplay;
 
+- (NSString*)msToHHMMSSXXX:(NSString*) inputTime;
+- (NSUInteger)HHMMSSXXXtoMS:(NSString*) inputTime;
+
 @end
 
 CoreApplication *_core_application;
 std::shared_ptr<WebBrowserInterface> _web_browser;
 int _textSize;
 bool _titleBarShown;
-
