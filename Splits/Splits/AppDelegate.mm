@@ -26,7 +26,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Initialize default settings
     //NSMutableArray *currentSplitsArray = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"YourKey"] mutableCopy];
-    NSMutableArray *splits_placeholder = [[NSMutableArray alloc] initWithCapacity:99];
+    NSMutableArray *splits_placeholder = [[NSMutableArray alloc] init];
     NSMutableDictionary *defaultsDict = [@{
                                            @"DefaultAlwaysOnTop":@YES,
                                            @"DecimalsToShow":@3,
@@ -37,7 +37,6 @@
                                            @"CurrentSplits":splits_placeholder
                                            } mutableCopy];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaultsDict];
-    [[NSUserDefaults standardUserDefaults] synchronize];
     /// --------------------
     
     _web_browser = std::shared_ptr<WebBrowserInterface>(new Browser(webView));
@@ -51,7 +50,6 @@
         [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"CurrentTitle"];
         [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"CurrentAttempts"];
         [[NSUserDefaults standardUserDefaults] setObject:splits_placeholder forKey:@"CurrentSplits"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
     [window setBackgroundColor:[NSColor blackColor]];
@@ -176,7 +174,7 @@
     
     _core_application->UpdateEdittedSplits([updatedTitle UTF8String], updatedAttempts, split_count, [split_names UTF8String], [split_times UTF8String]);
     
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSUserDefaults standardUserDefaults] synchronize]; // this gets executed whenever anything changes, so it should only be executed here
     
 }
 
@@ -230,6 +228,15 @@
 }
 
 - (IBAction)openDocument:(id)sender {
+    // Close and unload old splits
+    _core_application->CloseSplitsToTimer();
+    NSString *title = [NSString stringWithUTF8String:_core_application->ReturnTitle().c_str()];
+    NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
+    [[NSUserDefaults standardUserDefaults] setObject:title forKey:@"CurrentTitle"];
+    [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
+    NSMutableArray *splits_placeholder = [[NSMutableArray alloc] init];
+    [[NSUserDefaults standardUserDefaults] setObject:splits_placeholder forKey:@"CurrentSplits"];
+    // ---------------------------------------------------- //
     NSOpenPanel* openDlg = [NSOpenPanel openPanel];
     [openDlg setAllowedFileTypes: [[NSArray alloc] initWithObjects:@"splits", nil]];
     [openDlg setExtensionHidden:NO];
@@ -279,8 +286,6 @@
         [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
         NSLog(@"attempts :%ld", attempts);
         
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
     }
 }
 
@@ -316,6 +321,15 @@
 }
 
 - (IBAction)importWSplitFile:(id)sender {
+    // Close and unload old splits
+    _core_application->CloseSplitsToTimer();
+    NSString *title = [NSString stringWithUTF8String:_core_application->ReturnTitle().c_str()];
+    NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
+    [[NSUserDefaults standardUserDefaults] setObject:title forKey:@"CurrentTitle"];
+    [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
+    NSMutableArray *splits_placeholder = [[NSMutableArray alloc] init];
+    [[NSUserDefaults standardUserDefaults] setObject:splits_placeholder forKey:@"CurrentSplits"];
+    // ---------------------------------------------------- //
     NSOpenPanel* openDlg = [NSOpenPanel openPanel];
     [openDlg setExtensionHidden:NO];
     
@@ -365,7 +379,6 @@
         [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
         NSLog(@"attempts :%ld", attempts);
         
-        [[NSUserDefaults standardUserDefaults] synchronize];
         
     }
 }
@@ -440,10 +453,9 @@
 
     [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
     
-    NSMutableArray *splits_placeholder = [[NSMutableArray alloc] initWithCapacity:99];
+    NSMutableArray *splits_placeholder = [[NSMutableArray alloc] init];
     [[NSUserDefaults standardUserDefaults] setObject:splits_placeholder forKey:@"CurrentSplits"];
     
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 

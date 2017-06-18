@@ -472,7 +472,10 @@ bool CoreApplication::SetThreeDecimal() {
 }
 
 bool CoreApplication::CloseSplitsToTimer() {
+    printf("Core: Got close request");
     // Close and open just timer
+    split_names = "";
+    split_times = "";
     _currentSplitIndex=0;
     _attempts=0;
     _title = "";

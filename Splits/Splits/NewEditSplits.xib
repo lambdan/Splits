@@ -154,7 +154,7 @@
                     </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="-693.5" y="-244.5"/>
+            <point key="canvasLocation" x="-949" y="-234"/>
         </window>
         <arrayController automaticallyPreparesContent="YES" id="muI-dW-Qgd">
             <connections>

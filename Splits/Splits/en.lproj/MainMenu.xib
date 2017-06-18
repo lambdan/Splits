@@ -73,12 +73,7 @@
                 <menuItem title="File" id="83">
                     <menu key="submenu" title="File" id="81">
                         <items>
-                            <menuItem title="New" enabled="NO" keyEquivalent="n" id="82">
-                                <connections>
-                                    <action selector="newSplitsButton:" target="494" id="BF6-pS-uOe"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Edit Splits" enabled="NO" keyEquivalent="e" id="632">
+                            <menuItem title="New/Edit Splits" enabled="NO" keyEquivalent="e" id="632">
                                 <connections>
                                     <action selector="edit:" target="494" id="633"/>
                                 </connections>

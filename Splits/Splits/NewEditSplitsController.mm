@@ -18,16 +18,23 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"opened");
-    // Do view setup here.
+    // Add a watcher to detect changes to preferences...
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(defaultsChanged:)
+                                                 name:NSUserDefaultsDidChangeNotification
+                                               object:nil];
+}
+
+- (void)defaultsChanged:(NSNotification *)notification { // Detects changes to preferences or splits (through New/Edit Splits menu) and updates
+    [_splitsTable reloadData];
 }
 
 - (IBAction)addSegment:(NSButton *)sender {
-    NSLog(@"add");
+    //NSLog(@"add");
 }
 
 - (IBAction)removeSegment:(NSButton *)sender {
-    NSLog(@"remove");
+    //NSLog(@"remove");
     /*
      NSMutableArray *splits = [[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentSplits"];
     [splits removeLastObject];
