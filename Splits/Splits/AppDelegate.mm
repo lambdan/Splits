@@ -228,9 +228,9 @@
     _core_application->SplitTimer(); // Send split command
     NSInteger splitIndex = (NSInteger) _core_application->ReturnSplitIndex() - 1;
     NSInteger currentTime = (NSInteger) _core_application->ReturnCurrentTime();
-    NSLog(@"Split: adding current time %i to index %i", currentTime, splitIndex);
     
     if (splitIndex >= 0) {
+        NSLog(@"Split: adding current time %i to index %i", currentTime, splitIndex);
         [_splits_current_times setObject:@(currentTime) atIndex:splitIndex];
     }
     
@@ -238,32 +238,44 @@
     
     if (_core_application->ReturnRunFinished() == true) {
         NSLog(@"!!!!!!!!!!!!!!!! Run finished !!!!!!!!!!!!!!!");
-        // Run finished, load splits from run
-        // splits logic here (key name: CurrentSplitNames and CurrentSplitTimes
-        NSString *names = [NSString stringWithUTF8String:_core_application->ReturnSplitNames().c_str()];
-        //NSString *times = [NSString stringWithUTF8String:_core_application->ReturnSplitTimes().c_str()];
-        NSLog(@"RunFinished: Got Split Names:");
-        NSLog(names);
-        NSLog(@"RunFinished: Got Split Times: %@", _splits_current_times);
-        // Convert strings separated by crocodiles to array with split names
-    
-        NSMutableArray *splitNamesArray = [[names componentsSeparatedByString:@"@"] mutableCopy];
-        [splitNamesArray removeLastObject]; // remove last entry as it will be empty
-        NSMutableArray *splitTimesArray = _splits_current_times;
         
-        // Merge the two arrays into one with keys
-        NSMutableArray *splits = [NSMutableArray array];
-        for (NSUInteger i = 0; i < splitNamesArray.count; i++) {
-            // Convert ms to hhmmss
-            NSString *formattedTime = [self msToHHMMSSXXX:splitTimesArray[i] ];
-            NSLog(@"RunFinsihed: formatted time: %s", formattedTime);
-            [splits addObject: @{@"name" : splitNamesArray[i], @"time" : formattedTime}];
+        // Check if PB
+        NSString *times = [NSString stringWithUTF8String:_core_application->ReturnSplitTimes().c_str()];
+        NSMutableArray *loadedTimes = [[times componentsSeparatedByString:@"@"] mutableCopy];
+        [loadedTimes removeLastObject];
+        NSInteger oldPB = [(NSInteger) [loadedTimes lastObject] intValue];
+        NSLog(@"old pb: %i", oldPB);
+        
+        NSInteger thisRunsTime = [(NSInteger) [_splits_current_times lastObject] intValue];
+        NSLog(@"new pb: %i", thisRunsTime);
+        
+        if (thisRunsTime < oldPB || oldPB == 0) {
+            // This run was better, save it
+            NSLog(@"NEW PB!");
+            NSString *names = [NSString stringWithUTF8String:_core_application->ReturnSplitNames().c_str()];
+            NSLog(@"RunFinished: Got Split Names: %@", names);
+            NSLog(@"RunFinished: Got Split Times: %@", _splits_current_times);
+            
+            // Convert strings separated by crocodiles to array with split names
+            NSMutableArray *splitNamesArray = [[names componentsSeparatedByString:@"@"] mutableCopy];
+            [splitNamesArray removeLastObject]; // remove last entry as it will be empty
+            NSMutableArray *splitTimesArray = _splits_current_times;
+            
+            // Merge the two arrays into one with keys
+            NSMutableArray *splits = [NSMutableArray array];
+            for (NSUInteger i = 0; i < splitNamesArray.count; i++) {
+                // Convert ms to hhmmss
+                NSString *formattedTime = [self msToHHMMSSXXX:splitTimesArray[i] ];
+                NSLog(@"RunFinsihed: formatted time: %s", formattedTime);
+                [splits addObject: @{@"name" : splitNamesArray[i], @"time" : formattedTime}];
+            }
+            //NSLog(@"splits length: %i", splits.count);
+            
+            // Update userdefaults
+            [[NSUserDefaults standardUserDefaults] setObject:splits forKey:@"CurrentSplits"];
+        } else {
+            NSLog(@"Run finished, but no PB :(");
         }
-        //NSLog(@"splits length: %i", splits.count);
-        
-        // Update userdefaults
-        [[NSUserDefaults standardUserDefaults] setObject:splits forKey:@"CurrentSplits"];
-     
     }
 }
 

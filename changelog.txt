@@ -1,4 +1,5 @@
-# 1.07 - jun 18 2017
+# 1.07 - TBA
+- PB runs are now saved
 - New Splits file can now be made and saved
 - added New/Edit Splits window where you can edit Title, Attempts and Split Names/Times
 - added Edit Splits window where you can edit Title and Attempts and splits
