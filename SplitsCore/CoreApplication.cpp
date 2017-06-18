@@ -154,6 +154,8 @@ void CoreApplication::LoadWSplitSplits(std::string file) {
                 double split_seconds = atof(split_values[2].c_str());
                 unsigned long milliseconds = split_seconds * 1000;
                 split->set_time(milliseconds);
+                AddSplitNameToArray(split_values[0]);
+                AddSplitTimeToArray(milliseconds);
                 _splits.push_back(split);
             }
         }

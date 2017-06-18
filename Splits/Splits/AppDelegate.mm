@@ -329,7 +329,32 @@
         _core_application->LoadWSplitSplits([file cStringUsingEncoding:NSUTF8StringEncoding]);
         NSString *title = [NSString stringWithUTF8String:_core_application->ReturnTitle().c_str()];
         NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
-        NSLog(@"importWSplit: ReturnAttempts reports %i", attempts);
+        
+        // splits logic here (key name: CurrentSplitNames and CurrentSplitTimes
+        NSString *names = [NSString stringWithUTF8String:_core_application->ReturnSplitNames().c_str()];
+        NSString *times = [NSString stringWithUTF8String:_core_application->ReturnSplitTimes().c_str()];
+        NSLog(@"ImportWsplit: Got Split Names:");
+        NSLog(names);
+        NSLog(@"ImportWsplit: Got Split Times:");
+        NSLog(times);
+        // Convert strings separated by crocodiles to array with split names
+        NSMutableArray *splitNamesArray = [[names componentsSeparatedByString:@"🐊"] mutableCopy];
+        [splitNamesArray removeLastObject]; // remove last entry as it will be empty
+        NSMutableArray *splitTimesArray = [[times componentsSeparatedByString:@"🐊"] mutableCopy];
+        [splitTimesArray removeLastObject];
+        
+        // Merge the two arrays into one with keys
+        NSMutableArray *splits = [NSMutableArray array];
+        for (NSUInteger i = 0; i < splitNamesArray.count; i++) {
+            // Convert ms to hhmmss
+            NSString *formattedTime = [self msToHHMMSSXXX:splitTimesArray[i] ];
+            NSLog(@"formatted time: %s", formattedTime);
+            [splits addObject: @{@"name" : splitNamesArray[i], @"time" : formattedTime}];
+        }
+        //NSLog(@"splits length: %i", splits.count);
+        
+        // Update userdefaults
+        [[NSUserDefaults standardUserDefaults] setObject:splits forKey:@"CurrentSplits"];
         
         
         // Update NSUserDefaults with title, attempts and splits so we can edit them
@@ -338,9 +363,8 @@
         
         //NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
         [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
-        NSLog(@"importWSplit attempts :%ld", attempts);
+        NSLog(@"attempts :%ld", attempts);
         
-
         [[NSUserDefaults standardUserDefaults] synchronize];
         
     }
