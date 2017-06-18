@@ -61,6 +61,7 @@
     
     [NSTimer scheduledTimerWithTimeInterval: 0.033 target: self selector:@selector(onTick:) userInfo: nil repeats:YES];
     
+    _shouldUpdateSplits = true;
 
     // Load Always on Top-setting
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"DefaultAlwaysOnTop"] == YES) {
@@ -173,7 +174,12 @@
     
     NSLog(@"NSNotificationCenterSending this string to SplitsCore: %@", split_times);
     
-    _core_application->UpdateEdittedSplits([updatedTitle UTF8String], updatedAttempts, split_count, [split_names UTF8String], [split_times UTF8String]);
+    if (_shouldUpdateSplits == true) {
+        _core_application->UpdateEdittedSplits([updatedTitle UTF8String], updatedAttempts, split_count, [split_names UTF8String], [split_times UTF8String]);
+        _shouldUpdateSplits = true;
+    } else {
+        NSLog(@"_shouldUpdateSplits: Splits prevented from being updated");
+    }
     
     [[NSUserDefaults standardUserDefaults] synchronize]; // this gets executed whenever anything changes, so it should only be executed here
     
@@ -221,10 +227,12 @@
 }
 
 - (IBAction)timerStart:(id)sender {
+    _shouldUpdateSplits = false;
     _core_application->StartTimer();
 }
 
 - (IBAction)timerSplit:(id)sender {
+    _shouldUpdateSplits = false;
     _core_application->SplitTimer(); // Send split command
     NSInteger splitIndex = (NSInteger) _core_application->ReturnSplitIndex() - 1;
     NSInteger currentTime = (NSInteger) _core_application->ReturnCurrentTime();
@@ -272,6 +280,7 @@
             //NSLog(@"splits length: %i", splits.count);
             
             // Update userdefaults
+            _shouldUpdateSplits = false; // So we get to see our deltas, when we reset it will be updated instead
             [[NSUserDefaults standardUserDefaults] setObject:splits forKey:@"CurrentSplits"];
         } else {
             NSLog(@"Run finished, but no PB :(");
@@ -453,6 +462,7 @@
 }
 
 - (IBAction)timerReset:(id)sender {
+    _shouldUpdateSplits = true;
     _core_application->ResetTimer();
     NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
     _splits_current_times = [[NSMutableArray alloc] init];

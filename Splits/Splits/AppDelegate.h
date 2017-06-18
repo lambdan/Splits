@@ -60,4 +60,5 @@ CoreApplication *_core_application;
 std::shared_ptr<WebBrowserInterface> _web_browser;
 int _textSize;
 bool _titleBarShown;
+bool _shouldUpdateSplits;
 NSMutableArray *_splits_current_times;
