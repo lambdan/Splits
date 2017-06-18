@@ -1,5 +1,6 @@
 1.07 - jun 18 2017
 - New Splits file can now be made and saved
+- added New/Edit Splits window where you can edit Title, Attempts and Split Names/Times
 - attempt counter only increments if timer was running
 - added Edit Splits window where you can edit Title and Attempts and splits
 - added Preferences window
@@ -10,6 +11,7 @@
 - changed hotkeys
 - css and jquery are now loaded locally instead of going on the internet
 - added "Open HTML Folder" under Splits menu in the menubar, where you can change all the html components (such as the css, see README.md)
+- Importing WSplit files will now ignore Goal= line
 
 1.06 - TBA (the lost version)
 * added ”Reload CSS” which will reload the current css, useful when testing and so on

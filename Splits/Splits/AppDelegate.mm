@@ -332,7 +332,6 @@
     // ---------------------------------------------------- //
     NSOpenPanel* openDlg = [NSOpenPanel openPanel];
     [openDlg setExtensionHidden:NO];
-    
     [openDlg setCanChooseFiles:YES];
     [openDlg setAllowsMultipleSelection:NO];
     [openDlg setCanChooseDirectories:NO];

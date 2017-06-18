@@ -117,6 +117,7 @@ void CoreApplication::LoadWSplitSplits(std::string file) {
     std::string line = "";
     std::ifstream file_stream;
     std::string title_equals = "Title=";
+    std::string goal_equals = "Goal=";
     std::string attempts_equals = "Attempts=";
     std::string size_equals = "Size=";
     std::string offset_equals = "Offset=";
@@ -140,6 +141,8 @@ void CoreApplication::LoadWSplitSplits(std::string file) {
                 std::string attempts = line.substr(attempts_equals.size(), line.size() - attempts_equals.size());
                 _attempts = atoi(attempts.c_str());
             } else if(StartsWith(line, size_equals)) {
+                std::string size = line.substr(size_equals.size(), line.size() - size_equals.size());
+            } else if(StartsWith(line, goal_equals)) {
                 std::string size = line.substr(size_equals.size(), line.size() - size_equals.size());
             } else if(StartsWith(line, offset_equals)) {
                 std::string offset = line.substr(offset_equals.size(), line.size() - offset_equals.size());
