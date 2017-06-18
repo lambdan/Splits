@@ -27,7 +27,7 @@
     // Initialize default settings
     //NSMutableArray *currentSplitsArray = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"YourKey"] mutableCopy];
     NSMutableArray *splits_placeholder = [[NSMutableArray alloc] init];
-    _splits_current_times = [[NSMutableArray alloc] init];
+    //_splits_current_times = [[NSMutableArray alloc] init];
     NSMutableDictionary *defaultsDict = [@{
                                            @"DefaultAlwaysOnTop":@YES,
                                            @"DecimalsToShow":@3,
@@ -295,8 +295,8 @@
     NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
     [[NSUserDefaults standardUserDefaults] setObject:title forKey:@"CurrentTitle"];
     [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
-    NSMutableArray *splits_placeholder = [[NSMutableArray alloc] init];
-    [[NSUserDefaults standardUserDefaults] setObject:splits_placeholder forKey:@"CurrentSplits"];
+    //NSMutableArray *splits_placeholder = [[NSMutableArray alloc] init];
+    [[NSUserDefaults standardUserDefaults] setObject:_splits_current_times forKey:@"CurrentSplits"];
     // ---------------------------------------------------- //
     NSOpenPanel* openDlg = [NSOpenPanel openPanel];
     [openDlg setAllowedFileTypes: [[NSArray alloc] initWithObjects:@"splits", nil]];
@@ -381,6 +381,19 @@
     }
 }
 
+- (IBAction)exportWsplit:(id)sender {
+    NSSavePanel *savePanel = [NSSavePanel savePanel];
+    [savePanel setExtensionHidden:NO];
+    [savePanel setAllowedFileTypes: [[NSArray alloc] initWithObjects:@"wsplit", nil]];
+    long result = [savePanel runModal];
+    if(result == NSModalResponseOK) {
+        [fileName release];
+        fileName = [NSString stringWithString:[[savePanel URL] path]];;
+        [fileName retain];
+        _core_application->SaveWSplitSplits([fileName cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+}
+
 - (IBAction)importWSplitFile:(id)sender {
     // Close and unload old splits
     _core_application->CloseSplitsToTimer();
@@ -388,10 +401,11 @@
     NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
     [[NSUserDefaults standardUserDefaults] setObject:title forKey:@"CurrentTitle"];
     [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
-    NSMutableArray *splits_placeholder = [[NSMutableArray alloc] init];
-    [[NSUserDefaults standardUserDefaults] setObject:splits_placeholder forKey:@"CurrentSplits"];
+    //NSMutableArray *splits_placeholder = [NSMutableArray init];
+    [[NSUserDefaults standardUserDefaults] setObject:_splits_current_times forKey:@"CurrentSplits"];
     // ---------------------------------------------------- //
     NSOpenPanel* openDlg = [NSOpenPanel openPanel];
+    [openDlg setAllowedFileTypes: [[NSArray alloc] initWithObjects:@"wsplit", nil]];
     [openDlg setExtensionHidden:NO];
     [openDlg setCanChooseFiles:YES];
     [openDlg setAllowsMultipleSelection:NO];
@@ -399,17 +413,17 @@
     
     if([openDlg runModal] == NSModalResponseOK) {
         NSString *file = [[openDlg URL] path];
-        fileName = NULL;
         _core_application->LoadWSplitSplits([file cStringUsingEncoding:NSUTF8StringEncoding]);
         NSString *title = [NSString stringWithUTF8String:_core_application->ReturnTitle().c_str()];
         NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
+        NSLog(@"openDocument: ReturnAttempts reports %i", attempts);
         
         // splits logic here (key name: CurrentSplitNames and CurrentSplitTimes
         NSString *names = [NSString stringWithUTF8String:_core_application->ReturnSplitNames().c_str()];
         NSString *times = [NSString stringWithUTF8String:_core_application->ReturnSplitTimes().c_str()];
-        NSLog(@"ImportWsplit: Got Split Names:");
+        NSLog(@"openDocument: Got Split Names:");
         NSLog(names);
-        NSLog(@"ImportWsplit: Got Split Times:");
+        NSLog(@"openDocument: Got Split Times:");
         NSLog(times);
         // Convert strings separated by crocodiles to array with split names
         NSMutableArray *splitNamesArray = [[names componentsSeparatedByString:@"@"] mutableCopy];
@@ -438,7 +452,6 @@
         //NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
         [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
         NSLog(@"attempts :%ld", attempts);
-        
         
     }
 }

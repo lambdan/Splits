@@ -25,6 +25,7 @@
 @property (assign) IBOutlet NSMenuItem *previousSegmentMenuItem;
 @property (assign) IBOutlet NSMenuItem *nextSegmentMenuItem;
 @property (assign) IBOutlet NSMenuItem *alwaysOnTopMenuItem;
+@property (assign) IBOutlet NSMenuItem *exportWSplit;
 
 
 

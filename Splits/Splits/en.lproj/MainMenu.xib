@@ -106,6 +106,12 @@
                                     <action selector="saveAs:" target="494" id="639"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Export WSplit File..." id="LHH-YC-MrT">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="exportWsplit:" target="494" id="YHx-LR-W8o"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Revert to Saved" id="112">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
@@ -303,7 +309,7 @@
                     </menu>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="148" y="269"/>
+            <point key="canvasLocation" x="-220" y="272"/>
         </menu>
         <window title="Splits" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
@@ -340,6 +346,7 @@
         <customObject id="494" customClass="AppDelegate">
             <connections>
                 <outlet property="alwaysOnTopMenuItem" destination="629" id="631"/>
+                <outlet property="exportWSplit" destination="LHH-YC-MrT" id="BHf-UH-Ihx"/>
                 <outlet property="nextSegmentMenuItem" destination="596" id="608"/>
                 <outlet property="pauseMenuItem" destination="594" id="604"/>
                 <outlet property="previousSegmentMenuItem" destination="595" id="607"/>

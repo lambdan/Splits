@@ -76,7 +76,7 @@ void CoreApplication::LoadSplits(std::string file) {
 void CoreApplication::SaveSplits(std::string file) {
     std::ofstream file_stream;
     file_stream.open(file);
-    /*
+    
     YAML::Emitter out;
     out << YAML::BeginMap;
     out << YAML::Key << "title";
@@ -105,21 +105,8 @@ void CoreApplication::SaveSplits(std::string file) {
     
     out << YAML::EndSeq;
     out << YAML::EndMap;
-    */
-    
-    // Save in Wsplit format
-    file_stream << "Title=" << _title << "\n";
-    file_stream << "Attempts=" << _attempts << "\n";
-    for(int i = 0; i < _splits.size(); i++) {
-        int ms = _splits[i]->time();
-        float secs = ms / 1000.0;
-        //ms = ms - (ms % 1000);
-        file_stream << _splits[i]->name() << ",0," << secs << ",0\n";
-    }
-    
-    
-    
-    //file_stream << out.c_str();
+
+    file_stream << out.c_str();
     file_stream.close();
     
 }
@@ -144,7 +131,7 @@ void CoreApplication::LoadWSplitSplits(std::string file) {
         getline(file_stream, line);
         
         // Remove \r from end of line.
-        line = line.substr(0, line.size() - 1);
+        //line = line.substr(0, line.size() - 1);
         
         // Skip empty lines.
         if(line.size() > 0) {
@@ -172,7 +159,7 @@ void CoreApplication::LoadWSplitSplits(std::string file) {
                 split->set_time(milliseconds);
                 AddSplitNameToArray(split_values[0]);
                 AddSplitTimeToArray(milliseconds);
-                _splits.push_back(split);
+                _splits.push_back(split); // problematic line
             }
         }
         
@@ -185,7 +172,17 @@ void CoreApplication::LoadWSplitSplits(std::string file) {
 }
 
 void CoreApplication::SaveWSplitSplits(std::string file) {
-    
+    std::ofstream file_stream;
+    file_stream.open(file);
+    file_stream << "Title=" << _title << "\n";
+    file_stream << "Attempts=" << _attempts << "\n";
+    for(int i = 0; i < _splits.size(); i++) {
+        std::shared_ptr<Split> lastSplit = _splits[_splits.size() - 1];
+        unsigned long ms = _splits[i]->time();
+        float secs = ms / 1000.0;
+        file_stream << _splits[i]->name() << ",0," << secs << ",0\n";
+    }
+    file_stream.close();
 }
 
 
