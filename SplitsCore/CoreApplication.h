@@ -65,6 +65,11 @@ public:
     
     bool splitsLoaded;
     bool ReturnSplitsLoaded();
+    int ReturnSplit(int i);
+    int ReturnSplitIndex();
+    int ReturnCurrentTime();
+    bool ReturnRunFinished();
+    bool RunFinished;
     
     std::string AddSplitNameToArray(std::string name);
     std::string AddSplitTimeToArray(int time);

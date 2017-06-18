@@ -27,6 +27,7 @@
     // Initialize default settings
     //NSMutableArray *currentSplitsArray = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"YourKey"] mutableCopy];
     NSMutableArray *splits_placeholder = [[NSMutableArray alloc] init];
+    _splits_current_times = [[NSMutableArray alloc] init];
     NSMutableDictionary *defaultsDict = [@{
                                            @"DefaultAlwaysOnTop":@YES,
                                            @"DecimalsToShow":@3,
@@ -224,7 +225,46 @@
 }
 
 - (IBAction)timerSplit:(id)sender {
-    _core_application->SplitTimer();
+    _core_application->SplitTimer(); // Send split command
+    NSInteger splitIndex = (NSInteger) _core_application->ReturnSplitIndex() - 1;
+    NSInteger currentTime = (NSInteger) _core_application->ReturnCurrentTime();
+    NSLog(@"Split: adding current time %i to index %i", currentTime, splitIndex);
+    
+    if (splitIndex >= 0) {
+        [_splits_current_times setObject:@(currentTime) atIndex:splitIndex];
+    }
+    
+    NSLog(@"Split: split_current_times %@", _splits_current_times);
+    
+    if (_core_application->ReturnRunFinished() == true) {
+        NSLog(@"!!!!!!!!!!!!!!!! Run finished !!!!!!!!!!!!!!!");
+        // Run finished, load splits from run
+        // splits logic here (key name: CurrentSplitNames and CurrentSplitTimes
+        NSString *names = [NSString stringWithUTF8String:_core_application->ReturnSplitNames().c_str()];
+        //NSString *times = [NSString stringWithUTF8String:_core_application->ReturnSplitTimes().c_str()];
+        NSLog(@"RunFinished: Got Split Names:");
+        NSLog(names);
+        NSLog(@"RunFinished: Got Split Times: %@", _splits_current_times);
+        // Convert strings separated by crocodiles to array with split names
+    
+        NSMutableArray *splitNamesArray = [[names componentsSeparatedByString:@"@"] mutableCopy];
+        [splitNamesArray removeLastObject]; // remove last entry as it will be empty
+        NSMutableArray *splitTimesArray = _splits_current_times;
+        
+        // Merge the two arrays into one with keys
+        NSMutableArray *splits = [NSMutableArray array];
+        for (NSUInteger i = 0; i < splitNamesArray.count; i++) {
+            // Convert ms to hhmmss
+            NSString *formattedTime = [self msToHHMMSSXXX:splitTimesArray[i] ];
+            NSLog(@"RunFinsihed: formatted time: %s", formattedTime);
+            [splits addObject: @{@"name" : splitNamesArray[i], @"time" : formattedTime}];
+        }
+        //NSLog(@"splits length: %i", splits.count);
+        
+        // Update userdefaults
+        [[NSUserDefaults standardUserDefaults] setObject:splits forKey:@"CurrentSplits"];
+     
+    }
 }
 
 - (IBAction)openDocument:(id)sender {
@@ -259,9 +299,9 @@
         NSLog(@"openDocument: Got Split Times:");
         NSLog(times);
         // Convert strings separated by crocodiles to array with split names
-        NSMutableArray *splitNamesArray = [[names componentsSeparatedByString:@"🐊"] mutableCopy];
+        NSMutableArray *splitNamesArray = [[names componentsSeparatedByString:@"@"] mutableCopy];
         [splitNamesArray removeLastObject]; // remove last entry as it will be empty
-        NSMutableArray *splitTimesArray = [[times componentsSeparatedByString:@"🐊"] mutableCopy];
+        NSMutableArray *splitTimesArray = [[times componentsSeparatedByString:@"@"] mutableCopy];
         [splitTimesArray removeLastObject];
         
         // Merge the two arrays into one with keys
@@ -351,9 +391,9 @@
         NSLog(@"ImportWsplit: Got Split Times:");
         NSLog(times);
         // Convert strings separated by crocodiles to array with split names
-        NSMutableArray *splitNamesArray = [[names componentsSeparatedByString:@"🐊"] mutableCopy];
+        NSMutableArray *splitNamesArray = [[names componentsSeparatedByString:@"@"] mutableCopy];
         [splitNamesArray removeLastObject]; // remove last entry as it will be empty
-        NSMutableArray *splitTimesArray = [[times componentsSeparatedByString:@"🐊"] mutableCopy];
+        NSMutableArray *splitTimesArray = [[times componentsSeparatedByString:@"@"] mutableCopy];
         [splitTimesArray removeLastObject];
         
         // Merge the two arrays into one with keys
@@ -403,6 +443,7 @@
 - (IBAction)timerReset:(id)sender {
     _core_application->ResetTimer();
     NSInteger attempts = (NSInteger) _core_application->ReturnAttempts();
+    _splits_current_times = [[NSMutableArray alloc] init];
     [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
     
 }

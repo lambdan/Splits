@@ -179,6 +179,7 @@ void CoreApplication::SaveWSplitSplits(std::string file) {
 
 void CoreApplication::StartTimer() {
     _timer->Start();
+    RunFinished = false;
     firstsplit=0;
 }
 
@@ -189,6 +190,7 @@ void CoreApplication::StopTimer() {
 void CoreApplication::ResetTimer() {
     firstsplit=1; // this is for start/split being the same hotkey (DJS)
     _currentSplitIndex = 0;
+    RunFinished = false;
     if(_timer->status() == kRunning) { // If timer was runnning, increment attempts
         _attempts++;
     }
@@ -213,6 +215,9 @@ void CoreApplication::SplitTimer() {
                 _currentSplitIndex++;
                 if(_currentSplitIndex == _splits.size()) {
                     StopTimer();
+                    // Run finished here
+                    RunFinished = true;
+                    
                 }
                 UpdateSplits();
             } else {
@@ -220,6 +225,31 @@ void CoreApplication::SplitTimer() {
             }
         }
     }
+}
+
+int CoreApplication::ReturnSplit(int i) {
+    i = i - 1;
+    if (i < _splits.size()) {
+        unsigned long elapsed = _timer->GetTimeElapsedMilliseconds();
+        unsigned long total = elapsed - _splits[i]->time();
+        //printf("duration for %i: %i%\n", i, total);
+        return total;
+    } else {
+        return 0;
+    }
+}
+
+int CoreApplication::ReturnSplitIndex() {
+    return _currentSplitIndex;
+}
+
+int CoreApplication::ReturnCurrentTime() {
+    return _timer->GetTimeElapsedMilliseconds();
+}
+
+bool CoreApplication::ReturnRunFinished() {
+    printf("RunFinished: %d \n", RunFinished);
+    return RunFinished;
 }
 
 void CoreApplication::PauseTimer() {
@@ -342,7 +372,7 @@ void CoreApplication::ReloadSplits() {
     }
     
     _browser->RunJavascript(javascript_ss.str());
-    _currentSplitIndex = 0;
+    //_currentSplitIndex = 0;
     UpdateSplits();
 }
 
@@ -356,16 +386,14 @@ void CoreApplication::UpdateEdittedSplits(std::string title, int attempts, int s
     std::cout << "c++ Timer Core got these names back:" << split_names << "\n";
     std::cout << "c++ Timer Core got these times back:" << split_times << "\n";
     
-    //std::replace(split_names.begin(), split_names.end(), '@', ' '); // replace @ with space, hopefully no one will use @ in their split names
     std::replace(split_times.begin(), split_times.end(), '@', ' ');
     
-    // Check if any times are null, as that will cause problems otherwise
-    if (split_times.find("<null>") == std::string::npos) {
+    if (split_times.find("<null>") == std::string::npos) { // Check if any times are null, as that will cause problems otherwise
         // Names to array called names_array
         std::vector<std::string> names_array;
         std::stringstream ss(split_names);
         std::string tmp;
-        while(std::getline(ss, tmp, '@')){
+        while(std::getline(ss, tmp, '@')){ // Split split names by @
             names_array.push_back(tmp);
         }
         for(auto it = names_array.begin(); it != names_array.end(); ++it) {
@@ -559,13 +587,13 @@ bool CoreApplication::ReturnSplitsLoaded() {
 
 std::string CoreApplication::AddSplitNameToArray(std::string name) {
     split_names += name;
-    split_names += "🐊"; // Separator 😙
+    split_names += "@";
     printf("AddSplitNameToArray: %s\n", split_names.c_str());
 }
 
 std::string CoreApplication::AddSplitTimeToArray(int time) {
     split_times += std::to_string(time);
-    split_times += "🐊"; // Separator 😙
+    split_times += "@";
     printf("AddSplitTimeToArray: %s\n", split_times.c_str());
 }
 
