@@ -82,7 +82,7 @@ public:
     
     std::string ReturnTitle();
     int ReturnAttempts();
-    void UpdateEdittedSplits(std::string title, int attempts);
+    void UpdateEdittedSplits(std::string title, int attempts, int split_count, std::string split_names, std::string split_times);
 private:
     void ReloadSplits();
     void UpdateSplits();

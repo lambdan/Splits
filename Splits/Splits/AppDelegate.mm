@@ -153,8 +153,21 @@
     
     NSString *updatedTitle = [[NSUserDefaults standardUserDefaults] stringForKey:@"CurrentTitle"];
     NSInteger updatedAttempts = (NSInteger) [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentAttempts"];
+    
+    NSInteger split_count = [[[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentSplits"] count];
+
     NSLog(@"NSNotificationCenter: updating attempts to %ld", updatedAttempts);
-    _core_application->UpdateEdittedSplits([updatedTitle UTF8String], updatedAttempts);
+    
+    NSString *split_names = [[ [ [ NSUserDefaults standardUserDefaults] objectForKey:@"CurrentSplits"] valueForKey:@"name"] componentsJoinedByString:@"@"];
+    
+    NSMutableArray *times = [[[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentSplits"] valueForKey:@"time"];
+
+    // Combine times array into one string that can be sent to SplitsCore
+    NSString *split_times = [times componentsJoinedByString:@"@"];
+    
+    NSLog(@"My array: %@", split_times);
+    
+    _core_application->UpdateEdittedSplits([updatedTitle UTF8String], updatedAttempts, split_count, [split_names UTF8String], [split_times UTF8String]);
     
     [[NSUserDefaults standardUserDefaults] synchronize];
     

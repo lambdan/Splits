@@ -156,7 +156,7 @@
             </view>
             <point key="canvasLocation" x="-693.5" y="-244.5"/>
         </window>
-        <arrayController id="muI-dW-Qgd">
+        <arrayController automaticallyPreparesContent="YES" id="muI-dW-Qgd">
             <connections>
                 <binding destination="up3-6L-M4G" name="contentArray" keyPath="values.CurrentSplits" id="a9U-95-Qh4">
                     <dictionary key="options">

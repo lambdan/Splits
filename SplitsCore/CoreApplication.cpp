@@ -341,11 +341,50 @@ void CoreApplication::ReloadSplits() {
     UpdateSplits();
 }
 
-void CoreApplication::UpdateEdittedSplits(std::string title, int attempts) {
-    printf("UpdateEdittedSplits: received %i attempts\n", attempts);
+void CoreApplication::UpdateEdittedSplits(std::string title, int attempts, int split_count, std::string split_names, std::string split_times) {
+    _splits.clear();
+    printf("c++ Timer Core got Update Splits request. \n# of splits: %i \n", split_count);
     _title = title;
     _attempts = attempts;
-    ReloadSplits();
+    
+    // Split crocodile strings into arrays here
+    std::cout << "c++ Timer Core got these names back:" << split_names << "\n";
+    std::cout << "c++ Timer Core got these times back:" << split_times << "\n";
+    
+    //std::replace(split_names.begin(), split_names.end(), '@', ' '); // replace @ with space, hopefully no one will use @ in their split names
+    std::replace(split_times.begin(), split_times.end(), '@', ' ');
+    
+    // Check if any times are null, as that will cause problems otherwise
+    if (split_times.find("<null>") == std::string::npos) {
+        // Names to array called names_array
+        std::vector<std::string> names_array;
+        std::stringstream ss(split_names);
+        std::string tmp;
+        while(std::getline(ss, tmp, '@')){
+            names_array.push_back(tmp);
+        }
+        for(auto it = names_array.begin(); it != names_array.end(); ++it) {
+            std::cout << (*it) << std:: endl;
+        }
+        
+        // Times to vector v, from https://stackoverflow.com/a/23697112
+        std::stringstream sss(split_times);
+        std::vector<int> v;
+        std::copy( std::istream_iterator<int>( sss), std::istream_iterator<int>(),
+                  std::back_inserter(v));
+        
+        // To splits
+        for(unsigned i = 0; i < split_count; i++) {
+            std::shared_ptr<Split> split(new Split);
+            split->set_name(names_array[i]);
+            split->set_time(v[i]);
+            //AddSplitNameToArray(names_array[i]);
+            //AddSplitTimeToArray(milliseconds);
+            _splits.push_back(split);
+        }
+        splitsLoaded = true;
+        ReloadSplits();
+    }
 }
 
 void CoreApplication::UpdateSplits() {

@@ -1,8 +1,9 @@
 1.07 - TBA
-- add option to toggle titlebar (you cannot move window if it's gone)
+- New Splits file can now be made
 - attempts counter only increments if timer was running
 - added Edit Splits window where you can edit Title and Attempts and splits
 - added preferences window
+- add option to toggle titlebar (you cannot move window if it's gone)
 - whether title and/or attempts should be shown are now saved
 - how many decimals to show are now saved
 - change default window size to be more narrow, like most timers are
