@@ -375,6 +375,9 @@
 
     [[NSUserDefaults standardUserDefaults] setInteger:attempts forKey:@"CurrentAttempts"];
     
+    NSMutableArray *splits_placeholder = [[NSMutableArray alloc] initWithCapacity:99];
+    [[NSUserDefaults standardUserDefaults] setObject:splits_placeholder forKey:@"CurrentSplits"];
+    
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
