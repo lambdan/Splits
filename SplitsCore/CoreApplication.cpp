@@ -76,7 +76,7 @@ void CoreApplication::LoadSplits(std::string file) {
 void CoreApplication::SaveSplits(std::string file) {
     std::ofstream file_stream;
     file_stream.open(file);
-    
+    /*
     YAML::Emitter out;
     out << YAML::BeginMap;
     out << YAML::Key << "title";
@@ -105,8 +105,21 @@ void CoreApplication::SaveSplits(std::string file) {
     
     out << YAML::EndSeq;
     out << YAML::EndMap;
+    */
     
-    file_stream << out.c_str();
+    // Save in Wsplit format
+    file_stream << "Title=" << _title << "\n";
+    file_stream << "Attempts=" << _attempts << "\n";
+    for(int i = 0; i < _splits.size(); i++) {
+        int ms = _splits[i]->time();
+        float secs = ms / 1000.0;
+        //ms = ms - (ms % 1000);
+        file_stream << _splits[i]->name() << ",0," << secs << ",0\n";
+    }
+    
+    
+    
+    //file_stream << out.c_str();
     file_stream.close();
     
 }
