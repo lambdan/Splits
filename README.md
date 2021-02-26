@@ -1,3 +1,11 @@
+# PSA
+This is horribly outdated. I don't recommend it.
+
+Original readme below.
+
+
+-------------------------------------------
+
 # Splits for Mac
 
 Changelog: [changelog.txt](https://github.com/lambdan/Splits/blob/master/changelog.txt)
